@@ -347,8 +347,8 @@ class SatoshiDaemonManager(object):
             LOGINFO('No home dir, makedir not requested')
             self.failedFindHome = True
 
-      if self.failedFindExe:  raise self.BitcoindError, 'bitcoind not found'
-      if self.failedFindHome: raise self.BitcoindError, 'homedir not found'
+      if self.failedFindExe:  raise self.BitcoindError('bitcoind not found')
+      if self.failedFindHome: raise self.BitcoindError('homedir not found')
 
       self.disabled = False
       self.proxy = None
@@ -497,7 +497,7 @@ class SatoshiDaemonManager(object):
       bitconf = os.path.join(self.satoshiRoot, 'bitcoin.conf')
       if not os.path.exists(bitconf):
          if not makeIfDNE:
-            raise self.BitcoinDotConfError, 'Could not find bitcoin.conf'
+            raise self.BitcoinDotConfError('Could not find bitcoin.conf')
          else:
             LOGINFO('No bitcoin.conf available.  Creating it...')
             touchFile(bitconf)
@@ -597,10 +597,10 @@ class SatoshiDaemonManager(object):
       LOGINFO('Called startBitcoind')
 
       if self.isRunningBitcoind() or TheTDM.getTDMState()=='Downloading':
-         raise self.BitcoindError, 'Looks like we have already started theSDM'
+         raise self.BitcoindError('Looks like we have already started theSDM')
 
       if not os.path.exists(self.executable):
-         raise self.BitcoindError, 'Could not find bitcoind'
+         raise self.BitcoindError('Could not find bitcoind')
 
       
       chk1 = os.path.exists(self.useTorrentFile)
@@ -939,7 +939,7 @@ class SatoshiDaemonManager(object):
       if not state in ('BitcoindReady', 'BitcoindSynchronizing'):
          LOGWARN('Called callJSON(%s, %s)', func, str(args))
          LOGWARN('Current SDM state: %s', state)
-         raise self.BitcoindError, 'callJSON while %s'%state
+         raise self.BitcoindError('callJSON while %s'%state)
 
       return self.proxy.__getattr__(func)(*args)
 
@@ -964,10 +964,10 @@ class SatoshiDaemonManager(object):
 
    #############################################################################
    def printSDMInfo(self):
-      print('\nCurrent SDM State:'
-      print('\t', 'SDM State Str'.ljust(20), ':', self.getSDMState()
-      for key,value in self.returnSDMInfo().iteritems():
-         print('\t', str(key).ljust(20), ':', str(value)
+      print('\nCurrent SDM State:')
+      print('\t', 'SDM State Str'.ljust(20), ':', self.getSDMState())
+      for key,value in self.returnSDMInfo().items():
+         print('\t', str(key).ljust(20), ':', str(value))
 
    
 

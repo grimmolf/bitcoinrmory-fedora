@@ -59,18 +59,18 @@ class Timer(object):
       return timerEntry[0] + (RightNow() - timerEntry[2])
    
    def printTimings(self):
-      print('Timings:  '.ljust(30), 
-      print('nCall'.rjust(13),
-      print('cumulTime'.rjust(13),
-      print('avgTime'.rjust(13)
-      print('-'*70
-      for tname,quad in self.timerMap.iteritems():
-         print ('%s' % tname).ljust(30), 
-         print ('%d' % quad[1]).rjust(13),
-         print ('%0.6f' % quad[0]).rjust(13),
+      print('Timings:  '.ljust(30), end='')
+      print('nCall'.rjust(13), end='')
+      print('cumulTime'.rjust(13), end='')
+      print('avgTime'.rjust(13))
+      print('-'*70)
+      for tname,quad in self.timerMap.items():
+         print(('%s' % tname).ljust(30), end='')
+         print(('%d' % quad[1]).rjust(13), end='')
+         print(('%0.6f' % quad[0]).rjust(13), end='')
          avg = quad[0]/quad[1]
-         print ('%0.6f' % avg).rjust(13)
-      print('-'*70
+         print(('%0.6f' % avg).rjust(13))
+      print('-'*70)
    
    def saveTimingsCSV(self, fname):
       f = open(fname, 'w')
@@ -78,7 +78,7 @@ class Timer(object):
       f.write( 'nCall,')
       f.write( 'cumulTime,')
       f.write( 'avgTime\n\n')
-      for tname,quad in self.timerMap.iteritems():
+      for tname,quad in self.timerMap.items():
          f.write('%s,' % tname)
          f.write('%d,' % quad[1])
          f.write('%0.6f,' % quad[0])
@@ -86,7 +86,7 @@ class Timer(object):
          f.write('%0.6f\n' % avg)
       f.write('\n\nNote: timings may be incorrect if errors '
                          'were triggered in the timed functions')
-      print('Saved timings to file: %s' % fname
+      print('Saved timings to file: %s' % fname)
 
    def __init__(selfparams):  # @NoSelf
       pass

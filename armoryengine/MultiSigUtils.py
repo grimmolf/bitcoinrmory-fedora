@@ -489,7 +489,7 @@ class MultiSigLockbox(AsciiSerializable):
 
    #############################################################################
    def pprint(self):
-      print('Multi-signature %d-of-%d lockbox:' % (self.M, self.N)
+      print('Multi-signature %d-of-%d lockbox:' % (self.M, self.N))
       print('   Unique ID:  ', self.uniqueIDB58
       print('   Created:    ', unixTimeToFormatStr(self.createDate)
       print('   LBox Name:  ', self.shortName

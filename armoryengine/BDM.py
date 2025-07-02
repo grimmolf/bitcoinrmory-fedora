@@ -5,7 +5,10 @@
 # See LICENSE or http://www.gnu.org/licenses/agpl.html                         #
 #                                                                              #
 ################################################################################
-import Queue
+try:
+    import queue as Queue  # Python 3
+except ImportError:
+    import Queue  # Python 2
 import os.path
 import random
 import threading
@@ -86,7 +89,7 @@ class PySide_CallBack(Cpp.BDM_CallBack):
             cppNotificationListener(act, arglist)
       except:
          LOGEXCEPT('Error in running callback')
-         print sys.exc_info()
+         print(sys.exc_info())
          raise
 
    def progress(self, phase, walletVec, prog, seconds, progressNumeric):
@@ -104,7 +107,7 @@ class PySide_CallBack(Cpp.BDM_CallBack):
                
       except:
          LOGEXCEPT('Error in running progress callback')
-         print sys.exc_info()
+         print(sys.exc_info())
 
 class BDM_Inject(Cpp.BDM_Inject):
    def __init__(self):
@@ -122,7 +125,7 @@ class BDM_Inject(Cpp.BDM_Inject):
             self.hasResponse = True
       except:
          LOGEXCEPT('Error in running thread callback')
-         print sys.exc_info()
+         print(sys.exc_info())
 
    def runCommand(self, fn):
       self.hasResponse = False
