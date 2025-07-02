@@ -142,9 +142,9 @@ BASE16CHARS  = '0123456789abcdefABCDEF'
 LITTLEENDIAN  = '<'
 BIGENDIAN     = '>'
 NETWORKENDIAN = '!'
-ONE_BTC       = long(100000000)
-DONATION       = long(5000000)
-CENT          = long(1000000)
+ONE_BTC       = int(100000000)
+DONATION       = int(5000000)
+CENT          = int(1000000)
 UNINITIALIZED = None
 UNKNOWN       = -2
 MIN_TX_FEE    = 10000
@@ -250,8 +250,8 @@ CLI_ARGS = None
 
 # This is probably an abuse of the CLI_OPTIONS structure, but not
 # automatically expanding "~" symbols is killing me
-for opt,val in CLI_OPTIONS.__dict__.iteritems():
-   if not isinstance(val, basestring) or not val.startswith('~'):
+for opt,val in CLI_OPTIONS.__dict__.items():
+   if not isinstance(val, str) or not val.startswith('~'):
       continue
 
    if os.path.exists(os.path.expanduser(val)):
@@ -304,7 +304,12 @@ if OS_WINDOWS:
    BLKFILE_1stFILE = os.path.join(BLKFILE_DIR, 'blk00000.dat')
 elif OS_LINUX:
    OS_NAME         = 'Linux'
-   OS_VARIANT      = platform.linux_distribution()
+   # Python 3: linux_distribution() was removed, use generic alternative
+   try:
+      import distro
+      OS_VARIANT = (distro.name(), distro.version(), distro.codename())
+   except ImportError:
+      OS_VARIANT = (platform.system(), platform.release(), '')
    USER_HOME_DIR   = os.getenv('HOME')
    BTC_HOME_DIR    = os.path.join(USER_HOME_DIR, '.bitcoin', SUBDIR)
    ARMORY_HOME_DIR = os.path.join(USER_HOME_DIR, '.armory', SUBDIR)
@@ -1105,13 +1110,15 @@ def GetSystemDetails():
    out.Machine  = platform.machine().lower()
    if OS_LINUX:
       # Get total RAM
-      freeStr = subprocess_check_output('free -m', shell=True)
+      freeBytes = subprocess_check_output('free -m', shell=True)
+      freeStr = freeBytes.decode('utf-8') if isinstance(freeBytes, bytes) else freeBytes
       totalMemory = freeStr.split('\n')[1].split()[1]
       out.Memory = int(totalMemory) * 1024
 
       # Get CPU name
       out.CpuStr = 'Unknown'
-      cpuinfo = subprocess_check_output(['cat','/proc/cpuinfo'])
+      cpuinfoBytes = subprocess_check_output(['cat','/proc/cpuinfo'])
+      cpuinfo = cpuinfoBytes.decode('utf-8') if isinstance(cpuinfoBytes, bytes) else cpuinfoBytes
       for line in cpuinfo.split('\n'):
          if line.strip().lower().startswith('model name'):
             out.CpuStr = line.split(':')[1].strip()
@@ -1215,7 +1222,7 @@ LOGINFO('Network Name: ' + NETWORKS[ADDRBYTE])
 LOGINFO('Satoshi Port: %d', BITCOIN_PORT)
 LOGINFO('Do wlt check: %s', str(DO_WALLET_CHECK))
 LOGINFO('Named options/arguments to armoryengine.py:')
-for key,val in ast.literal_eval(str(CLI_OPTIONS)).iteritems():
+for key,val in ast.literal_eval(str(CLI_OPTIONS)).items():
    LOGINFO('    %-16s: %s', key,val)
 LOGINFO('Other arguments:')
 for val in CLI_ARGS:
@@ -1899,14 +1906,13 @@ def binary_switchEndian(s):
 ##### INT/HEXSTR #####
 def int_to_hex(i, widthBytes=0, endOut=LITTLEENDIAN):
    """
-   Convert an integer (int() or long()) to hexadecimal.  Default behavior is
+   Convert an integer to hexadecimal.  Default behavior is
    to use the smallest even number of hex characters necessary, and using
    little-endian.   Use the widthBytes argument to add 0-padding where needed
    if you are expecting constant-length output.
    """
    h = hex(i)[2:]
-   if isinstance(i,long):
-      h = h[:-1]
+   # Python 3: no long type needed
    if len(h)%2 == 1:
       h = '0'+h
    if not widthBytes==0:
@@ -1938,7 +1944,7 @@ def hex_to_binary(h, endIn=LITTLEENDIAN, endOut=LITTLEENDIAN):
    bout = h.replace(' ','')  # copies data, no references
    if not endIn==endOut:
       bout = hex_switchEndian(bout)
-   return bout.decode('hex_codec')
+   return bytes.fromhex(bout)
 
 
 def binary_to_hex(b, endOut=LITTLEENDIAN, endIn=LITTLEENDIAN):
@@ -1946,7 +1952,7 @@ def binary_to_hex(b, endOut=LITTLEENDIAN, endIn=LITTLEENDIAN):
    Converts binary to hexadecimal.  Endianness is only switched
    if (endIn != endOut)
    """
-   hout = b.encode('hex_codec')
+   hout = b.hex() if isinstance(b, bytes) else b
    if not endOut==endIn:
       hout = hex_switchEndian(hout)
    return hout
@@ -2211,14 +2217,14 @@ def readSixteenEasyBytes(et18):
 def ubtc_to_floatStr(n):
    return '%d.%08d' % divmod (n, ONE_BTC)
 def floatStr_to_ubtc(s):
-   return long(round(float(s) * ONE_BTC))
+   return int(round(float(s) * ONE_BTC))
 def float_to_btc (f):
-   return long (round(f * ONE_BTC))
+   return int(round(f * ONE_BTC))
 
 
 # From https://en.bitcoin.it/wiki/Proper_Money_Handling_(JSON-RPC)
 def JSONtoAmount(value):
-   return long(round(float(value) * 1e8))
+   return int(round(float(value) * 1e8))
 def AmountToJSON(amount):
    return float(amount / 1e8)
 
@@ -2569,7 +2575,7 @@ class FiniteField(object):
 
 ################################################################################
 def SplitSecret(secret, needed, pieces, nbytes=None, use_random_x=False):
-   if not isinstance(secret, basestring):
+   if not isinstance(secret, str):
       secret = secret.toBinStr()
 
    if nbytes==None:
@@ -3039,7 +3045,7 @@ def notifyOnSurpriseTx(blk0, blk1, wltMap, lboxWltMap, isGui, bdm, notifyQueue, 
          # Iterate through the Python wallets and create a ledger entry for
          # the transaction. If we haven't already been notified of the
          # transaction, put it on the notification queue.
-         for wltID,wlt in wltMap.iteritems():
+         for wltID,wlt in wltMap.items():
             le = wlt.cppWallet.calcLedgerEntryForTx(cppTx)
             if isGui and (notifyQueue != None):
                if not le.getTxHash() in notifiedAlready:
@@ -3053,7 +3059,7 @@ def notifyOnSurpriseTx(blk0, blk1, wltMap, lboxWltMap, isGui, bdm, notifyQueue, 
          # Iterate through the C++ lockbox wallets and create a ledger entry
          # for the transaction.If we haven't already been notified of the
          # transaction, put it on the notification queue.
-         for lbID,cppWlt in lboxWltMap.iteritems():
+         for lbID,cppWlt in lboxWltMap.items():
             le = cppWlt.calcLedgerEntryForTx(cppTx)
             if isGui and (notifyQueue != None):
                if not le.getTxHash() in notifiedAlready:
@@ -3465,17 +3471,17 @@ def HardcodedKeyMaskParams():
 
    paramMap['IV']    = SecureBinaryData( hash256(digits_pi)[:16] )
    paramMap['SALT']  = SecureBinaryData( hash256(digits_e) )
-   paramMap['KDFBYTES'] = long(16*MEGABYTE)
+   paramMap['KDFBYTES'] = int(16*MEGABYTE)
 
    def hardcodeCreateSecurePrintPassphrase(secret):
-      if isinstance(secret, basestring):
+      if isinstance(secret, str):
          secret = SecureBinaryData(secret)
       bin7 = HMAC512(secret.getHash256(), paramMap['SALT'].toBinStr())[:7]
       out,bin7 = SecureBinaryData(binary_to_base58(bin7 + hash256(bin7)[0])), None
       return out
 
    def hardcodeCheckSecurePrintCode(securePrintCode):
-      if isinstance(securePrintCode, basestring):
+      if isinstance(securePrintCode, str):
          pwd = base58_to_binary(securePrintCode)
       else:
          pwd = base58_to_binary(securePrintCode.toBinStr())
@@ -3484,7 +3490,7 @@ def HardcodedKeyMaskParams():
       return isgood
 
    def hardcodeApplyKdf(secret):
-      if isinstance(secret, basestring):
+      if isinstance(secret, str):
          secret = SecureBinaryData(secret)
       kdf = KdfRomix()
       kdf.usePrecomputedKdfParams(paramMap['KDFBYTES'], 1, paramMap['SALT'])
@@ -3543,7 +3549,7 @@ class SettingsFile(object):
    def pprint(self, nIndent=0):
       indstr = indent*nIndent
       print(indstr + 'Settings:')
-      for k,v in self.settingsMap.iteritems():
+      for k,v in self.settingsMap.items():
          print(indstr + indent + k.ljust(15), v)
 
 
@@ -3617,11 +3623,11 @@ class SettingsFile(object):
       if not path:
          path = self.settingsPath
       f = open(path, 'w')
-      for key,val in self.settingsMap.iteritems():
+      for key,val in self.settingsMap.items():
          try:
             # Skip anything that throws an exception
             valStr = ''
-            if   isinstance(val, basestring):
+            if   isinstance(val, str):
                valStr = val
             elif isinstance(val, int) or \
                  isinstance(val, float) or \
