@@ -47,7 +47,7 @@ This modernized version requires:
 ```bash
 # Install system dependencies
 sudo dnf install -y python3-devel python3-pip gcc-c++ make swig \
-    python3-pyqt5 python3-twisted libcrypto++-devel leveldb-devel
+    python3-qt5 python3-twisted cryptopp-devel leveldb-devel
 
 # Clone and build
 git clone https://github.com/grimmolf/bitcoinrmory-fedora.git
@@ -129,7 +129,7 @@ make
   - Ubuntu: `sudo apt install python3-dev`
 
 * **PyQt5** (replaces PyQt4)
-  - Fedora: `sudo dnf install python3-pyqt5`
+  - Fedora: `sudo dnf install python3-qt5`
   - Ubuntu: `sudo apt install python3-pyqt5`
 
 * **Python Twisted** (asynchronous networking)
@@ -137,7 +137,7 @@ make
   - Ubuntu: `sudo apt install python3-twisted`
 
 * **Crypto++** (cryptographic operations)
-  - Fedora: `sudo dnf install libcrypto++-devel`
+  - Fedora: `sudo dnf install cryptopp-devel`
   - Ubuntu: `sudo apt install libcrypto++-dev`
 
 * **SWIG** (Python/C++ bindings)

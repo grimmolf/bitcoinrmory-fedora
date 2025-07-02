@@ -103,10 +103,10 @@ gtest.a : gtest-all.o
 
 ####
 ifndef PYVER
-PYVER=python
-PYTHON_LDFLAGS=$(shell python-config --ldflags)
+PYVER=python3
+PYTHON_LDFLAGS=$(shell python3-config --libs --embed)
 else
-PYTHON_LDFLAGS=$(shell $(PYVER)-config --ldflags )
+PYTHON_LDFLAGS=$(shell $(PYVER)-config --libs --embed )
 endif
 
 CppBlockUtilsTests.o : CppBlockUtilsTests.cpp $(HEADERS) $(GTEST_HEADERS) ../../_CppBlockUtils.so

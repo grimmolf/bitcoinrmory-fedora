@@ -15,6 +15,8 @@
 
 %{
 #define SWIG_PYTHON_EXTRA_NATIVE_CONTAINERS
+/* Force Python 3 compatibility */
+#define PY_MAJOR_VERSION 3
 #include "BlockObj.h"
 #include "BlockUtils.h"
 #include "BtcUtils.h"
@@ -93,26 +95,35 @@ namespace std
 /* Convert Python(str) to C++(BinaryData) */
 %typemap(in) BinaryData
 {
-   if(!PyString_Check($input))
+   if(PyBytes_Check($input))
    {
-      PyErr_SetString(PyExc_ValueError, "Expected string argument!");
+      $1 = BinaryData((uint8_t*)PyBytes_AsString($input), PyBytes_Size($input));
+   }
+   else if(PyUnicode_Check($input))
+   {
+      PyObject* bytes = PyUnicode_AsUTF8String($input);
+      if(!bytes) return NULL;
+      $1 = BinaryData((uint8_t*)PyBytes_AsString(bytes), PyBytes_Size(bytes));
+      Py_DECREF(bytes);
+   }
+   else
+   {
+      PyErr_SetString(PyExc_ValueError, "Expected bytes or string argument!");
       return NULL;
    }
-   
-   $1 = BinaryData((uint8_t*)PyString_AsString($input), PyString_Size($input));
 }
 
 /******************************************************************************/
-/* Convert C++(BinaryData) to Python(str) */
+/* Convert C++(BinaryData) to Python(bytes) */
 %typemap(out) BinaryData
 {
-   $result = PyString_FromStringAndSize((char*)($1.getPtr()), $1.getSize());
+   $result = PyBytes_FromStringAndSize((char*)($1.getPtr()), $1.getSize());
 }
 
-/* Convert C++(const BinaryDataRef) to Python(str) */
+/* Convert C++(const BinaryDataRef) to Python(bytes) */
 %typemap(out) const BinaryDataRef
 {
-   $result = PyString_FromStringAndSize((char*)($1.getPtr()), $1.getSize());
+   $result = PyBytes_FromStringAndSize((char*)($1.getPtr()), $1.getSize());
 }
 /******************************************************************************/
 /*
@@ -123,40 +134,61 @@ namespace std
 */
 %typemap(in) BinaryData const & (BinaryData bdObj)
 {
-   if(!PyString_Check($input))
+   if(PyBytes_Check($input))
    {
-      PyErr_SetString(PyExc_ValueError, "Expected string argument!");
+      bdObj.copyFrom((uint8_t*)PyBytes_AsString($input), PyBytes_Size($input));
+      $1 = &bdObj;
+   }
+   else if(PyUnicode_Check($input))
+   {
+      PyObject* bytes = PyUnicode_AsUTF8String($input);
+      if(!bytes) return NULL;
+      bdObj.copyFrom((uint8_t*)PyBytes_AsString(bytes), PyBytes_Size(bytes));
+      Py_DECREF(bytes);
+      $1 = &bdObj;
+   }
+   else
+   {
+      PyErr_SetString(PyExc_ValueError, "Expected bytes or string argument!");
       return NULL;
    }
-   bdObj.copyFrom((uint8_t*)PyString_AsString($input), PyString_Size($input));
-   $1 = &bdObj;
 }
 
 /******************************************************************************/
-/* Convert C++(BinaryData const &) to Python(str) */
+/* Convert C++(BinaryData const &) to Python(bytes) */
 %typemap(out) BinaryData const & 
 {
-   $result = PyString_FromStringAndSize((char*)($1->getPtr()), $1->getSize());
+   $result = PyBytes_FromStringAndSize((char*)($1->getPtr()), $1->getSize());
 }
 
 /******************************************************************************/
-// Convert Python(list[string]) to C++(vector<BinaryData>) 
+// Convert Python(list[bytes/string]) to C++(vector<BinaryData>) 
 %typemap(in) const std::vector<BinaryData> & (std::vector<BinaryData> bdObjVec)
 {
 	for(int i=0; i<PyList_Size($input); i++)
 	{
 		PyObject* strobj = PyList_GetItem($input, i);
 		
-		BinaryData bdStr((uint8_t*)PyString_AsString(strobj), PyString_Size(strobj));
-
-		bdObjVec.push_back(bdStr);
+		if(PyBytes_Check(strobj))
+		{
+			BinaryData bdStr((uint8_t*)PyBytes_AsString(strobj), PyBytes_Size(strobj));
+			bdObjVec.push_back(bdStr);
+		}
+		else if(PyUnicode_Check(strobj))
+		{
+			PyObject* bytes = PyUnicode_AsUTF8String(strobj);
+			if(!bytes) return NULL;
+			BinaryData bdStr((uint8_t*)PyBytes_AsString(bytes), PyBytes_Size(bytes));
+			Py_DECREF(bytes);
+			bdObjVec.push_back(bdStr);
+		}
 	}
 
 	$1 = &bdObjVec;
 }
 
 /******************************************************************************/
-// Convert C++(vector<BinaryData>) to Python(list[string])
+// Convert C++(vector<BinaryData>) to Python(list[bytes])
 %typemap(out) vector<BinaryData>
 {
 	vector<BinaryData>::iterator bdIter = $1.begin();
@@ -167,7 +199,7 @@ namespace std
 	{
 		BinaryData & bdobj = (*bdIter);
 		
-		PyObject* thisPyObj = PyString_FromStringAndSize((char*)(bdobj.getPtr()), bdobj.getSize());
+		PyObject* thisPyObj = PyBytes_FromStringAndSize((char*)(bdobj.getPtr()), bdobj.getSize());
 
 		PyList_SET_ITEM(thisList, i, thisPyObj);
 
@@ -179,7 +211,7 @@ namespace std
 }
 
 /******************************************************************************/
-// Convert C++(set<BinaryData>) to Python(list[string])
+// Convert C++(set<BinaryData>) to Python(list[bytes])
 %typemap(out) set<BinaryData>
 {
 	set<BinaryData>::iterator bdIter = $1.begin();
@@ -190,7 +222,7 @@ namespace std
 	{
 		auto& bdobj = (*bdIter);
 		
-		PyObject* thisPyObj = PyString_FromStringAndSize(bdobj.getCharPtr(), bdobj.getSize());
+		PyObject* thisPyObj = PyBytes_FromStringAndSize(bdobj.getCharPtr(), bdobj.getSize());
 
 		PyList_SET_ITEM(thisList, i, thisPyObj);
 
@@ -209,16 +241,37 @@ namespace std
 
 	while(PyDict_Next($input, &pos, &key, &value))
 	{
-		BinaryData wltIDStr((uint8_t*)PyString_AsString(key), PyString_Size(key));
+		BinaryData wltIDStr;
+		if(PyBytes_Check(key))
+		{
+			wltIDStr = BinaryData((uint8_t*)PyBytes_AsString(key), PyBytes_Size(key));
+		}
+		else if(PyUnicode_Check(key))
+		{
+			PyObject* bytes = PyUnicode_AsUTF8String(key);
+			if(!bytes) return NULL;
+			wltIDStr = BinaryData((uint8_t*)PyBytes_AsString(bytes), PyBytes_Size(bytes));
+			Py_DECREF(bytes);
+		}
 		std::vector<BinaryData> bdObjVec;
 
 		for(int i=0; i<PyList_Size(value); i++)
 		{
 			PyObject* strobj = PyList_GetItem(value, i);
 		
-			BinaryData bdStr((uint8_t*)PyString_AsString(strobj), PyString_Size(strobj));
-
-			bdObjVec.push_back(bdStr);
+			if(PyBytes_Check(strobj))
+			{
+				BinaryData bdStr((uint8_t*)PyBytes_AsString(strobj), PyBytes_Size(strobj));
+				bdObjVec.push_back(bdStr);
+			}
+			else if(PyUnicode_Check(strobj))
+			{
+				PyObject* bytes = PyUnicode_AsUTF8String(strobj);
+				if(!bytes) return NULL;
+				BinaryData bdStr((uint8_t*)PyBytes_AsString(bytes), PyBytes_Size(bytes));
+				Py_DECREF(bytes);
+				bdObjVec.push_back(bdStr);
+			}
 		}
 
 		map_bd_vec_bd.insert(std::make_pair(wltIDStr, std::move(bdObjVec)));

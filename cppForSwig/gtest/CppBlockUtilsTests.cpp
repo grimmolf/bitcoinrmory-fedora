@@ -9950,7 +9950,7 @@ TEST_F(BlockUtilsSuper, RepaidMissingTxio)
    }
 
    //delete the keys
-   auto& delKeysThread = [&ssh, this](void)->void
+   auto delKeysThread = [&ssh, this](void)->void
    { 
       LMDBEnv::Transaction tx(iface_->dbEnv_[BLKDATA].get(), LMDB::ReadWrite);
 
