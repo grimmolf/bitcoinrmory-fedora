@@ -1085,8 +1085,8 @@ class PyBtcAddress(object):
             if self.binPrivKey32_Plain.getSize()==32:
                pubKey = CryptoAES().ComputePublicKey(self.binPrivKey32_Plain)
             else:
-               raise UnserializeError('Checksum mismatch in PublicKey ' +\)
-                                       '('+hash160_to_addrStr(self.addrStr20)+')'
+               raise UnserializeError('Checksum mismatch in PublicKey ' +
+                                       '('+hash160_to_addrStr(self.addrStr20)+')')
 
       self.binPublicKey65 = pubKey
 
@@ -1226,36 +1226,36 @@ class PyBtcAddress(object):
             return '--'*32
          else:
             return x.toHexStr()[:nchar]
-      print indent + 'BTC Address      :', self.getAddrStr()
-      print indent + 'Hash160[BE]      :', binary_to_hex(self.getAddr160())
-      print indent + 'Wallet Location  :', self.walletByteLoc
-      print indent + 'Chained Address  :', self.chainIndex >= -1
-      print indent + 'Have (priv,pub)  : (%s,%s)' % \
-                     (str(self.hasPrivKey()), str(self.hasPubKey()))
-      print indent + 'First/Last Time  : (%s,%s)' % \
-                     (str(self.timeRange[0]), str(self.timeRange[1]))
-      print indent + 'First/Last Block : (%s,%s)' % \
-                     (str(self.blkRange[0]), str(self.blkRange[1]))
+      print(indent + 'BTC Address      :', self.getAddrStr())
+      print(indent + 'Hash160[BE]      :', binary_to_hex(self.getAddr160()))
+      print(indent + 'Wallet Location  :', self.walletByteLoc)
+      print(indent + 'Chained Address  :', self.chainIndex >= -1)
+      print(indent + 'Have (priv,pub)  : (%s,%s)' % \
+                     (str(self.hasPrivKey()), str(self.hasPubKey())))
+      print(indent + 'First/Last Time  : (%s,%s)' % \
+                     (str(self.timeRange[0]), str(self.timeRange[1])))
+      print(indent + 'First/Last Block : (%s,%s)' % \
+                     (str(self.blkRange[0]), str(self.blkRange[1])))
       if self.hasPubKey():
-         print indent + 'PubKeyX(BE)      :', \
-                        binary_to_hex(self.binPublicKey65.toBinStr()[1:33 ])
-         print indent + 'PubKeyY(BE)      :', \
-                        binary_to_hex(self.binPublicKey65.toBinStr()[  33:])
-      print indent + 'Encryption parameters:'
-      print indent + '   UseEncryption :', self.useEncryption
-      print indent + '   IsLocked      :', self.isLocked
-      print indent + '   KeyChanged    :', self.keyChanged
-      print indent + '   ChainIndex    :', self.chainIndex
-      print indent + '   Chaincode     :', pp(self.chaincode)
-      print indent + '   InitVector    :', pp(self.binInitVect16)
+         print(indent + 'PubKeyX(BE)      :', \
+                        binary_to_hex(self.binPublicKey65.toBinStr()[1:33 ]))
+         print(indent + 'PubKeyY(BE)      :', \
+                        binary_to_hex(self.binPublicKey65.toBinStr()[  33:]))
+      print(indent + 'Encryption parameters:')
+      print(indent + '   UseEncryption :', self.useEncryption)
+      print(indent + '   IsLocked      :', self.isLocked)
+      print(indent + '   KeyChanged    :', self.keyChanged)
+      print(indent + '   ChainIndex    :', self.chainIndex)
+      print(indent + '   Chaincode     :', pp(self.chaincode))
+      print(indent + '   InitVector    :', pp(self.binInitVect16))
       if withPrivKey and self.hasPrivKey():
-         print indent + 'PrivKeyPlain(BE) :', pp(self.binPrivKey32_Plain)
-         print indent + 'PrivKeyCiphr(BE) :', pp(self.binPrivKey32_Encr)
+         print(indent + 'PrivKeyPlain(BE) :', pp(self.binPrivKey32_Plain))
+         print(indent + 'PrivKeyCiphr(BE) :', pp(self.binPrivKey32_Encr))
       else:
-         print indent + 'PrivKeyPlain(BE) :', pp(SecureBinaryData())
-         print indent + 'PrivKeyCiphr(BE) :', pp(SecureBinaryData())
+         print(indent + 'PrivKeyPlain(BE) :', pp(SecureBinaryData()))
+         print(indent + 'PrivKeyCiphr(BE) :', pp(SecureBinaryData()))
       if self.createPrivKeyNextUnlock:
-         print indent + '           ***** :', 'PrivKeys available on next unlock'
+         print(indent + '           ***** :', 'PrivKeys available on next unlock')
 
    def toString(self, withPrivKey=True, indent=''):
       def pp(x, nchar=1000):
