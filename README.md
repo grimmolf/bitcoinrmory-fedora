@@ -28,13 +28,7 @@ This fork has been comprehensively modernized for **Python 3** and **modern Linu
 
 ##Donations
 
-Please take a moment to donate! 1ArmoryXcfq7TnCSuZa9fQjRYwJ4bkRKfv
-
-![bitcoin:1ArmoryXcfq7TnCSuZa9fQjRYwJ4bkRKfv][Donation Image]
-
 ##Building Armory From Source
-
-See instructions [here][Armory Build Instructions]
 
 
 ##Dependencies
