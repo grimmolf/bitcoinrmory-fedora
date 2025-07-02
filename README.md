@@ -31,41 +31,137 @@ This fork has been comprehensively modernized for **Python 3** and **modern Linu
 ##Building Armory From Source
 
 
-##Dependencies
+## Installation Instructions
 
-* GNU Compiler Collection  
- Linux:   Install package `g++`
+### Prerequisites
 
-* Crypto++  
- Linux:   Install package `libcrypto++-dev`  
- Windows: [Download][Windows Crypto Download]    
-  
-* SWIG  
- Linux:   Install package `swig`  
- Windows: [Download][Windows SWIG Download]  
- MSVS: Copy swigwin-2.x directory next to cryptopp as `swigwin`  
-  
-* Python 2.6/2.7  
- Linux:   Install package `python-dev`  
- Windows: [Download][Windows Python Download]  
-  
-* Python Twisted -- asynchronous networking  
- Linux:   Install package `python-twisted`  
- Windows: [Download][Windows Twisted Download]  
-  
-* PyQt 4 (for Python 2.X)  
- Linux:   Install packages `libqtcore4`, `libqt4-dev`, `python-qt4`, and `pyqt4-dev-tools`  
- Windows: [Download][Windows QT Download]  
-  
-* qt4reactor.py -- combined eventloop for PyQt and Twisted  
- All OS:  [Download][QT4 Reactor Download]  
+This modernized version requires:
+- **Python 3.7+** with development headers
+- **PyQt5** for GUI components
+- **Bitcoin Core** (bitcoind) for blockchain operations
+- **Modern Linux distribution** (tested on Fedora 42)
 
-* pywin32  
- Windows Only:  qt4reactor relies on pywin32 (for win32event module). [Download][Windows PyWin Download]  
-  
-* py2exe  
- (OPTIONAL - if you want to make a standalone executable in Windows)  
- Windows: [Download][Windows Py2Exe Download]  
+### Quick Installation
+
+#### Fedora/RHEL/CentOS
+```bash
+# Install system dependencies
+sudo dnf install -y python3-devel python3-pip gcc-c++ make swig \
+    python3-pyqt5 python3-twisted libcrypto++-devel leveldb-devel
+
+# Clone and build
+git clone https://github.com/grimmolf/bitcoinrmory-fedora.git
+cd bitcoinrmory-fedora
+make
+```
+
+#### Ubuntu/Debian
+```bash
+# Install system dependencies
+sudo apt update
+sudo apt install -y python3-dev python3-pip build-essential swig \
+    python3-pyqt5 python3-twisted libcrypto++-dev libleveldb-dev
+
+# Clone and build
+git clone https://github.com/grimmolf/bitcoinrmory-fedora.git
+cd bitcoinrmory-fedora
+make
+```
+
+#### Arch Linux
+```bash
+# Install system dependencies
+sudo pacman -S python python-pip gcc make swig python-pyqt5 \
+    python-twisted crypto++ leveldb
+
+# Clone and build
+git clone https://github.com/grimmolf/bitcoinrmory-fedora.git
+cd bitcoinrmory-fedora
+make
+```
+
+### Detailed Installation Steps
+
+1. **Install Bitcoin Core** (required dependency):
+   ```bash
+   # Download from https://bitcoin.org/en/download
+   # Or install via package manager:
+   sudo dnf install bitcoin-core  # Fedora
+   sudo apt install bitcoind      # Ubuntu/Debian
+   ```
+
+2. **Clone the repository**:
+   ```bash
+   git clone https://github.com/grimmolf/bitcoinrmory-fedora.git
+   cd bitcoinrmory-fedora
+   ```
+
+3. **Install Python dependencies**:
+   ```bash
+   pip3 install --user -r requirements.txt
+   ```
+
+4. **Build C++ components**:
+   ```bash
+   make clean
+   make
+   ```
+
+5. **Run tests** (optional but recommended):
+   ```bash
+   make test
+   ```
+
+6. **Launch Armory**:
+   ```bash
+   python3 ArmoryQt.py
+   ```
+
+### Dependencies (Updated for Python 3)
+
+**Core Dependencies:**
+* **GNU Compiler Collection (g++)**
+  - Fedora: `sudo dnf install gcc-c++`
+  - Ubuntu: `sudo apt install build-essential`
+
+* **Python 3.7+ with development headers**
+  - Fedora: `sudo dnf install python3-devel`
+  - Ubuntu: `sudo apt install python3-dev`
+
+* **PyQt5** (replaces PyQt4)
+  - Fedora: `sudo dnf install python3-pyqt5`
+  - Ubuntu: `sudo apt install python3-pyqt5`
+
+* **Python Twisted** (asynchronous networking)
+  - Fedora: `sudo dnf install python3-twisted`
+  - Ubuntu: `sudo apt install python3-twisted`
+
+* **Crypto++** (cryptographic operations)
+  - Fedora: `sudo dnf install libcrypto++-devel`
+  - Ubuntu: `sudo apt install libcrypto++-dev`
+
+* **SWIG** (Python/C++ bindings)
+  - Fedora: `sudo dnf install swig`
+  - Ubuntu: `sudo apt install swig`
+
+* **LevelDB** (blockchain database)
+  - Fedora: `sudo dnf install leveldb-devel`
+  - Ubuntu: `sudo apt install libleveldb-dev`
+
+### Troubleshooting
+
+**Build Issues:**
+- Ensure all development packages are installed (`-devel` on Fedora, `-dev` on Ubuntu)
+- For build errors, try: `make clean && make DEBUG=1`
+
+**Runtime Issues:**
+- Verify Bitcoin Core is installed and accessible
+- Check Python path includes local installation: `export PYTHONPATH=$PWD:$PYTHONPATH`
+- For GUI issues, ensure X11 forwarding is enabled for SSH sessions
+
+**Python Import Errors:**
+- This version requires Python 3.7+, will not work with Python 2.x
+- Install missing packages with: `pip3 install <package-name>`  
 
 ##Sample Code
 
