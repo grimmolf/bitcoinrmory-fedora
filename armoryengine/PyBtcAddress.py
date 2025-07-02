@@ -552,7 +552,7 @@ class PyBtcAddress(object):
                self.keyChanged = False
             else:
                # Can't encrypt the addr because we don't have encryption key
-               raise WalletLockError(("\n\tTrying to destroy plaintext key, but no")
+               raise WalletLockError("\n\tTrying to destroy plaintext key, but no"
                                        "\n\tencrypted key data is available, and no"
                                        "\n\tencryption key provided to encrypt it.")
 
@@ -1059,13 +1059,13 @@ class PyBtcAddress(object):
       # If this is SUPPOSED to contain a private key...
       if containsPrivKey:
          if privKey.getSize()==0:
-            raise UnserializeError('Checksum mismatch in PrivateKey '+\)
-                                    '('+hash160_to_addrStr(self.addrStr20)+')'
+            raise UnserializeError('Checksum mismatch in PrivateKey ' +
+                                    '('+hash160_to_addrStr(self.addrStr20)+')')
 
          if self.useEncryption:
             if iv.getSize()==0:
-               raise UnserializeError('Checksum mismatch in IV ' +\)
-                                    '('+hash160_to_addrStr(self.addrStr20)+')'
+               raise UnserializeError('Checksum mismatch in IV ' +
+                                    '('+hash160_to_addrStr(self.addrStr20)+')')
             if self.createPrivKeyNextUnlock:
                self.createPrivKeyNextUnlock_IVandKey[0] = iv.copy()
                self.createPrivKeyNextUnlock_IVandKey[1] = privKey.copy()
