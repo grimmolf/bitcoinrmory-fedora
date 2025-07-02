@@ -3639,7 +3639,7 @@ class ArmoryMainWindow(QMainWindow):
             'You have chosen to sweep %d %s, but Armory is currently '
             'in offline mode.  The sweep will be performed the next time you '
             'go into online mode.  You can initiate online mode (if available) '
-            'from the dashboard in the main window.' (nkey,strPlur), QMessageBox.Ok)
+            'from the dashboard in the main window.' % (nkey,strPlur), QMessageBox.Ok)
          confirmed=True
 
       else:

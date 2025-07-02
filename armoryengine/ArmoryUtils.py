@@ -581,20 +581,20 @@ if not CLI_OPTIONS.rpcport == DEFAULT:
 
 
 if sys.argv[0]=='ArmoryQt.py':
-   print('********************************************************************************'
-   print('Loading Armory Engine:'
-   print('   Armory Version:      ', getVersionString(BTCARMORY_VERSION)
-   print('   Armory Build:        ', BTCARMORY_BUILD
-   print('   PyBtcWallet  Version:', getVersionString(PYBTCWALLET_VERSION)
-   print('Detected Operating system:', OS_NAME
-   print('   OS Variant            :', OS_VARIANT
-   print('   User home-directory   :', USER_HOME_DIR
-   print('   Satoshi BTC directory :', BTC_HOME_DIR
-   print('   Armory home dir       :', ARMORY_HOME_DIR
-   print('   ArmoryDB directory     :', ARMORY_DB_DIR
-   print('   Armory settings file  :', SETTINGS_PATH
-   print('   Armory log file       :', ARMORY_LOG_FILE
-   print('   Do wallet checking    :', DO_WALLET_CHECK
+   print('********************************************************************************')
+   print('Loading Armory Engine:')
+   print('   Armory Version:      ', getVersionString(BTCARMORY_VERSION))
+   print('   Armory Build:        ', BTCARMORY_BUILD)
+   print('   PyBtcWallet  Version:', getVersionString(PYBTCWALLET_VERSION))
+   print('Detected Operating system:', OS_NAME)
+   print('   OS Variant            :', OS_VARIANT)
+   print('   User home-directory   :', USER_HOME_DIR)
+   print('   Satoshi BTC directory :', BTC_HOME_DIR)
+   print('   Armory home dir       :', ARMORY_HOME_DIR)
+   print('   ArmoryDB directory     :', ARMORY_DB_DIR)
+   print('   Armory settings file  :', SETTINGS_PATH)
+   print('   Armory log file       :', ARMORY_LOG_FILE)
+   print('   Do wallet checking    :', DO_WALLET_CHECK)
 
 
 
@@ -707,7 +707,7 @@ def execAndWait(cli_str, timeout=0, useStartInfo=True):
    while process.poll() == None:
       time.sleep(0.1)
       if timeout>0 and (RightNow() - start)>timeout:
-         print('Process exceeded timeout, killing it'
+         print('Process exceeded timeout, killing it')
          killProcess(pid)
    out,err = process.communicate()
    return [out,err]
@@ -787,7 +787,7 @@ def LOGEXCEPT(msg, *a):
 
 def chopLogFile(filename, size):
    if not os.path.exists(filename):
-      print('Log file doesn\'t exist [yet]'
+      print('Log file doesn\'t exist [yet]')
       return
 
    logFile = open(filename, 'r')
@@ -898,7 +898,7 @@ def LOGRAWDATA(rawStr, loglevel=DEFAULT_RAWDATA_LOGLEVEL):
 
 cpplogfile = None
 if CLI_OPTIONS.logDisable:
-   print('Logging is disabled'
+   print('Logging is disabled')
    rootLogger.disabled = True
 
 
@@ -1744,7 +1744,7 @@ def isLikelyDataType(theStr, dtype=None):
 
 cpplogfile = None
 if CLI_OPTIONS.logDisable:
-   print('Logging is disabled'
+   print('Logging is disabled')
    rootLogger.disabled = True
 
 
@@ -1868,12 +1868,12 @@ def pprintHex(theStr, indent='', withAddr=True, major=8, minor=8):
    entire block, remove address markings, or change the major/minor
    grouping size (major * minor = hexCharsPerRow)
    """
-   print prettyHex(theStr, indent, withAddr, major, minor)
+   print(prettyHex(theStr, indent, withAddr, major, minor))
 
 
 def pprintDiff(str1, str2, indent=''):
    if not len(str1)==len(str2):
-      print('pprintDiff: Strings are different length!'
+      print('pprintDiff: Strings are different length!')
       return
 
    byteDiff = []
@@ -3542,9 +3542,9 @@ class SettingsFile(object):
    #############################################################################
    def pprint(self, nIndent=0):
       indstr = indent*nIndent
-      print indstr + 'Settings:'
+      print(indstr + 'Settings:')
       for k,v in self.settingsMap.iteritems():
-         print indstr + indent + k.ljust(15), v
+         print(indstr + indent + k.ljust(15), v)
 
 
    #############################################################################
