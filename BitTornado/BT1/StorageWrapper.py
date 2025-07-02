@@ -95,9 +95,9 @@ class StorageWrapper:
         self.total_length = storage.get_total_length()
         self.amount_left = self.total_length
         if self.total_length <= self.piece_size * (len(hashes) - 1):
-            raise ValueError, 'bad data in responsefile - total too small'
+            raise ValueError('bad data in responsefile - total too small')
         if self.total_length > self.piece_size * len(hashes):
-            raise ValueError, 'bad data in responsefile - total too big'
+            raise ValueError('bad data in responsefile - total too big')
         self.numactive = [0] * len(hashes)
         self.inactive_requests = [1] * len(hashes)
         self.amount_inactive = self.total_length
@@ -121,8 +121,8 @@ class StorageWrapper:
         self.download_history = {}
         self.failed_pieces = {}
         self.out_of_place = 0
-        self.write_buf_max = config['write_buffer_size']*1048576L
-        self.write_buf_size = 0L
+        self.write_buf_max = config['write_buffer_size']*1048576
+        self.write_buf_size = 0
         self.write_buf = {}   # structure:  piece: [(start, data), ...]
         self.write_buf_list = []
 
@@ -206,7 +206,7 @@ class StorageWrapper:
         for p,v in self.places.items():
             assert not got.has_key(v)
             got[v] = 1
-        for i in xrange(len(self.hashes)):
+        for i in range(len(self.hashes)):
             if self.places.has_key(i):  # restored from pickled
                 self.check_targets[self.hashes[i]] = []
                 if self.places[i] == i:
@@ -303,7 +303,7 @@ class StorageWrapper:
             self.holes = []
             return False
         self.tomove = float(self.out_of_place)
-        for i in xrange(len(self.hashes)):
+        for i in range(len(self.hashes)):
             if not self.places.has_key(i):
                 self.places[i] = i
             elif self.places[i] != i:
@@ -506,7 +506,7 @@ class StorageWrapper:
         try:
             self.storage.write(self.piece_size * index + begin, data)
             return True
-        except IOError, e:
+        except IOError as e:
             self.failed('IO Error: ' + str(e))
             return False
 
@@ -554,16 +554,16 @@ class StorageWrapper:
                 pass
         try:
             self.storage.sync()
-        except IOError, e:
+        except IOError as e:
             self.failed('IO Error: ' + str(e))
-        except OSError, e:
+        except OSError as e:
             self.failed('OS Error: ' + str(e))
 
 
     def _move_piece(self, index, newpos):
         oldpos = self.places[index]
         if DEBUG:
-            print 'moving '+str(index)+' from '+str(oldpos)+' to '+str(newpos)
+            print('moving '+str(index)+' from '+str(oldpos)+' to '+str(newpos)
         assert oldpos != index
         assert oldpos != newpos
         assert index == newpos or not self.places.has_key(newpos)
@@ -652,7 +652,7 @@ class StorageWrapper:
             while self._clear_space(index):
                 pass
             if DEBUG:
-                print 'new place for '+str(index)+' at '+str(self.places[index])
+                print('new place for '+str(index)+' at '+str(self.places[index])
         if self.flag.isSet():
             return
 
@@ -782,7 +782,7 @@ class StorageWrapper:
         try:
             return self.storage.read(self.piece_size * piece + begin,
                                                      length, flush_first)
-        except IOError, e:
+        except IOError as e:
             self.failed('IO Error: ' + str(e))
             return None
 
@@ -790,9 +790,9 @@ class StorageWrapper:
     def set_file_readonly(self, n):
         try:
             self.storage.set_readonly(n)
-        except IOError, e:
+        except IOError as e:
             self.failed('IO Error: ' + str(e))
-        except OSError, e:
+        except OSError as e:
             self.failed('OS Error: ' + str(e))
 
 
@@ -823,7 +823,7 @@ class StorageWrapper:
 
     def reblock(self, new_blocked):
         # assume downloads have already been canceled and chunks made inactive
-        for i in xrange(len(new_blocked)):
+        for i in range(len(new_blocked)):
             if new_blocked[i] and not self.blocked[i]:
                 length = self._piecelen(i)
                 self.amount_desired -= length
@@ -899,7 +899,7 @@ class StorageWrapper:
         pieces = Bitfield(len(self.hashes))
         places = []
         partials = []
-        for p in xrange(len(self.hashes)):
+        for p in range(len(self.hashes)):
             if self.blocked[p] or not self.places.has_key(p):
                 continue
             h = self.have[p]
@@ -944,7 +944,7 @@ class StorageWrapper:
                 assert not data.get('places',None)
                 assert not data.get('partials',None)
                 have = Bitfield(len(self.hashes))
-                for i in xrange(len(self.hashes)):
+                for i in range(len(self.hashes)):
                     have[i] = True
                 assert have.complete()
                 _places = []
@@ -953,10 +953,10 @@ class StorageWrapper:
                 have = Bitfield(len(self.hashes), data['pieces'])
                 _places = data['places']
                 assert len(_places) % 2 == 0
-                _places = [_places[x:x+2] for x in xrange(0,len(_places),2)]
+                _places = [_places[x:x+2] for x in range(0,len(_places),2)]
                 _partials = data['partials']
                 assert len(_partials) % 2 == 0
-                _partials = [_partials[x:x+2] for x in xrange(0,len(_partials),2)]
+                _partials = [_partials[x:x+2] for x in range(0,len(_partials),2)]
                 
             for index, place in _places:
                 if place not in valid_places:
@@ -967,7 +967,7 @@ class StorageWrapper:
                 got[index] = 1
                 got[place] = 1
 
-            for index in xrange(len(self.hashes)):
+            for index in range(len(self.hashes)):
                 if have[index]:
                     if not places.has_key(index):
                         if index not in valid_places:
@@ -993,7 +993,7 @@ class StorageWrapper:
                     places[index] = index
                     got[index] = 1
                 assert len(plist) % 2 == 0
-                plist = [plist[x:x+2] for x in xrange(0,len(plist),2)]
+                plist = [plist[x:x+2] for x in range(0,len(plist),2)]
                 dirty[index] = plist
                 stat_active[index] = 1
                 download_history[index] = {}
@@ -1002,7 +1002,7 @@ class StorageWrapper:
                 l = []
                 if plist[0][0] > 0:
                     l.append((0,plist[0][0]))
-                for i in xrange(len(plist)-1):
+                for i in range(len(plist)-1):
                     end = plist[i][0]+plist[i][1]
                     assert not end > plist[i+1][0]
                     l.append((end,plist[i+1][0]-end))

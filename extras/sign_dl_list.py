@@ -14,7 +14,7 @@ wltfile = open(os.path.join(ARMORY_HOME_DIR, 'signingwlt.txt'),'r')
 wltname = wltfile.readlines()[0].strip()
 wltpath = os.path.join(ARMORY_HOME_DIR, wltname)
 if not os.path.exists(wltpath):
-   print 'No wallet!'
+   print('No wallet!'
 wlt = PyBtcWallet().readWalletFile(wltpath)
 LOGINFO('Wallet to use: %s', wltpath)
 
@@ -37,7 +37,7 @@ if Priv.getSize()==0:
    exit(1)
 
 Pub = SecureBinaryData(hex_to_binary(ARMORY_INFO_SIGN_PUBLICKEY))
-print 'Keys match? ', CryptoECDSA().CheckPubPrivKeyMatch(Priv, Pub)
+print('Keys match? ', CryptoECDSA().CheckPubPrivKeyMatch(Priv, Pub)
 
 
 fn = 'versions.txt'
@@ -54,5 +54,5 @@ msgToSign = extractSignedDataFromVersionsDotTxt(sigData, doVerify=False)
 Msg = SecureBinaryData(msgToSign)
 
 result = CryptoECDSA().SignData(Msg, Priv)
-print 'Signature:', result.toHexStr()
+print('Signature:', result.toHexStr()
 

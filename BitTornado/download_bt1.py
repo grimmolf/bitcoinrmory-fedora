@@ -172,7 +172,7 @@ def download(params, filefunc, statusfunc, finfunc, errorfunc, doneflag, cols,
 
     try:
         config = parse_params(params, presets)
-    except ValueError, e:
+    except ValueError as e:
         failed('error: ' + str(e) + '\nrun with no args for parameter explanations')
         return
     if not config:
@@ -191,7 +191,7 @@ def download(params, filefunc, statusfunc, finfunc, errorfunc, doneflag, cols,
         listen_port = rawserver.find_and_bind(config['minport'], config['maxport'],
                         config['bind'], ipv6_socket_style = config['ipv6_binds_v4'],
                         upnp = upnp_type, randomizer = config['random_port'])
-    except socketerror, e:
+    except socketerror as e:
         failed("Couldn't listen - " + str(e))
         return
 
@@ -247,10 +247,10 @@ def parse_params(params, presets = {}):
             try:
                 urlparse(args[0])
             except:
-                raise ValueError, 'bad filename or url'
+                raise ValueError('bad filename or url')
             config['url'] = args[0]
     elif (config['responsefile'] == '') == (config['url'] == ''):
-        raise ValueError, 'need responsefile or url, must have one, cannot have both'
+        raise ValueError('need responsefile or url, must have one, cannot have both')
     return config
 
 
@@ -286,7 +286,7 @@ def get_response(file, url, errorfunc):
                 return None
         response = h.read()
     
-    except IOError, e:
+    except IOError as e:
         errorfunc('problem getting response info - ' + str(e))
         return None
     try:    
@@ -300,7 +300,7 @@ def get_response(file, url, errorfunc):
             errorfunc("warning: bad data in responsefile")
             response = bdecode(response, sloppy=1)
         check_message(response)
-    except ValueError, e:
+    except ValueError as e:
         errorfunc("got bad file info - " + str(e))
         return None
 
@@ -325,7 +325,7 @@ class BT1Download:
         
         self.info = self.response['info']
         self.pieces = [self.info['pieces'][x:x+20]
-                       for x in xrange(0, len(self.info['pieces']), 20)]
+                       for x in range(0, len(self.info['pieces']), 20)]
         self.len_pieces = len(self.pieces)
         self.argslistheader = argslistheader
         self.unpauseflag = Event()
@@ -387,7 +387,7 @@ class BT1Download:
                 make(file)
                 files = [(file, file_length)]
             else:
-                file_length = 0L
+                file_length = 0
                 for x in self.info['files']:
                     file_length += x['length']
                 file = filefunc(self.info['name'], file_length,
@@ -427,7 +427,7 @@ class BT1Download:
                         n = path.join(n, i)
                     files.append((n, x['length']))
                     make(n)
-        except OSError, e:
+        except OSError as e:
             self.errorfunc("Couldn't allocate dir - " + str(e))
             return None
 
@@ -505,7 +505,7 @@ class BT1Download:
             try:
                 self.storage = Storage(self.files, self.info['piece length'],
                                        self.doneflag, self.config, disabled_files)
-            except IOError, e:
+            except IOError as e:
                 self.errorfunc('trouble accessing files - ' + str(e))
                 return None
             if self.doneflag.isSet():
@@ -517,9 +517,9 @@ class BT1Download:
                 self._data_flunked, self.rawserver.add_task,
                 self.config, self.unpauseflag)
             
-        except ValueError, e:
+        except ValueError as e:
             self._failed('bad data - ' + str(e))
-        except IOError, e:
+        except IOError as e:
             self._failed('IOError - ' + str(e))
         if self.doneflag.isSet():
             return None
@@ -587,7 +587,7 @@ class BT1Download:
 
         self.checking = False
 
-        for i in xrange(self.len_pieces):
+        for i in range(self.len_pieces):
             if self.storagewrapper.do_I_have(i):
                 self.picker.complete(i)
         self.upmeasure = Measure(self.config['max_rate_period'],

@@ -41,7 +41,7 @@ class PyBlockHeader(BlockComponent):
 
    def serialize(self):
       if self.version == UNINITIALIZED:
-         raise UnitializedBlockDataError, 'PyBlockHeader object not initialized!'
+         raise UnitializedBlockDataError('PyBlockHeader object not initialized!')
       binOut = BinaryPacker()
       binOut.put(UINT32, self.version)
       binOut.put(BINARY_CHUNK, self.prevBlkHash)
@@ -69,7 +69,7 @@ class PyBlockHeader(BlockComponent):
 
    def getHash(self, endian=LITTLEENDIAN):
       if self.version == UNINITIALIZED:
-         raise UnitializedBlockDataError, 'PyBlockHeader object not initialized!'
+         raise UnitializedBlockDataError('PyBlockHeader object not initialized!')
       if len(self.theHash) < 32:
          self.theHash = hash256(self.serialize())
       outHash = self.theHash
@@ -79,14 +79,14 @@ class PyBlockHeader(BlockComponent):
 
    def getHashHex(self, endian=LITTLEENDIAN):
       if self.version == UNINITIALIZED:
-         raise UnitializedBlockDataError, 'PyBlockHeader object not initialized!'
+         raise UnitializedBlockDataError('PyBlockHeader object not initialized!')
       if len(self.theHash) < 32:
          self.theHash = hash256(self.serialize())
       return binary_to_hex(self.theHash, endian)
 
    def getDifficulty(self):
       if self.diffBits == UNINITIALIZED:
-         raise UnitializedBlockDataError, 'PyBlockHeader object not initialized!'
+         raise UnitializedBlockDataError('PyBlockHeader object not initialized!')
       self.intDifficult = binaryBits_to_difficulty(self.diffBits)
       return self.intDifficult
    
@@ -135,7 +135,7 @@ class PyBlockData(object):
 
    def serialize(self):
       if self.numTx == UNINITIALIZED:
-         raise UnitializedBlockDataError, 'PyBlockData object not initialized!'
+         raise UnitializedBlockDataError('PyBlockData object not initialized!')
       binOut = BinaryPacker()
       binOut.put(VAR_INT, self.numTx)
       for tx in self.txList:
@@ -150,7 +150,7 @@ class PyBlockData(object):
 
       self.txList = []
       self.numTx  = blkData.get(VAR_INT)
-      for i in xrange(self.numTx):
+      for i in range(self.numTx):
          self.txList.append( PyTx().unserialize(blkData) )
       self.merkleTree = []
       self.merkleRoot = ''

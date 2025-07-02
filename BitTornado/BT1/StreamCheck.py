@@ -28,7 +28,7 @@ def tobinary(i):
 
 hexchars = '0123456789ABCDEF'
 hexmap = []
-for i in xrange(256):
+for i in range(256):
     hexmap.append(hexchars[(i&0xF0)/16]+hexchars[i&0x0F])
 
 def tohex(s):

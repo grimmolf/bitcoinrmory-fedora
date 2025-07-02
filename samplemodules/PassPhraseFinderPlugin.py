@@ -1,7 +1,7 @@
 from operator import add, mul
 import os
 
-from PyQt4.Qt import QPushButton, SIGNAL, QTextEdit, QScrollArea, QTabWidget, \
+from PyQt5.Qt import QPushButton, SIGNAL, QTextEdit, QScrollArea, QTabWidget, \
    QLineEdit, QAbstractTableModel, QModelIndex, Qt, QVariant, QTableView, QIcon,\
    QDialogButtonBox, QGridLayout, QLabel, QComboBox, QMenu, QCursor, QListWidget,\
    QListWidgetItem, QMessageBox, QString

@@ -26,7 +26,7 @@ DIRNAME = '.'+product_name
 hexchars = '0123456789abcdef'
 hexmap = []
 revmap = {}
-for i in xrange(256):
+for i in range(256):
     x = hexchars[(i&0xF0)/16]+hexchars[i&0x0F]
     hexmap.append(x)
     revmap[x] = chr(i)
@@ -38,7 +38,7 @@ def tohex(s):
     return ''.join(r)
 
 def unhex(s):
-    r = [ revmap[s[x:x+2]] for x in xrange(0, len(s), 2) ]
+    r = [ revmap[s[x:x+2]] for x in range(0, len(s), 2) ]
     return ''.join(r)
 
 def copyfile(oldpath, newpath): # simple file copy, all in RAM

@@ -232,7 +232,7 @@ def ws_connect():
 
 @socketio.on('disconnect', namespace='/ws')
 def ws_disconnect():
-    print 'Client disconnected'
+    print('Client disconnected'
 
 @socketio.on('listen', namespace='/ws')
 def ws_listen(message):

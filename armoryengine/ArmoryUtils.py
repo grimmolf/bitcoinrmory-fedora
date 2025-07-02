@@ -14,11 +14,11 @@
 ################################################################################
 import ast
 from datetime import datetime
-from email.MIMEMultipart import MIMEMultipart
-from email.MIMEBase import MIMEBase
-from email.MIMEText import MIMEText
-from email.Utils import COMMASPACE, formatdate
-from email import Encoders
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email.mime.text import MIMEText
+from email.utils import COMMASPACE, formatdate
+from email import encoders as Encoders
 import hashlib
 import inspect
 import locale
@@ -32,7 +32,10 @@ import random
 import signal
 import smtplib
 from struct import pack, unpack
-from itertools import izip
+try:
+    from itertools import izip
+except ImportError:
+    izip = zip
 #from subprocess import PIPE
 import sys
 import threading
@@ -317,8 +320,8 @@ elif OS_MACOSX:
    BLKFILE_DIR     = os.path.join(BTC_HOME_DIR, 'blocks')
    BLKFILE_1stFILE = os.path.join(BLKFILE_DIR, 'blk00000.dat')
 else:
-   print '***Unknown operating system!'
-   print '***Cannot determine default directory locations'
+   print('***Unknown operating system!')
+   print('***Cannot determine default directory locations')
 
 # Get the host operating system
 opsys = platform.system()
@@ -384,8 +387,8 @@ if not CLI_OPTIONS.satoshiHome==DEFAULT:
          CLI_OPTIONS.satoshiHome = testnetTry
 
    if not os.path.exists(CLI_OPTIONS.satoshiHome):
-      print 'Directory "%s" does not exist!  Using default!' % \
-                                                CLI_OPTIONS.satoshiHome
+      print('Directory "%s" does not exist!  Using default!' % \
+                                                CLI_OPTIONS.satoshiHome)
    else:
       BTC_HOME_DIR = CLI_OPTIONS.satoshiHome
 
@@ -448,7 +451,7 @@ MULTISIG_FILE   = os.path.join(ARMORY_HOME_DIR, MULTISIG_FILE_NAME)
 
 if not CLI_OPTIONS.multisigFile==DEFAULT:
    if not os.path.exists(CLI_OPTIONS.multisigFile):
-      print 'Multisig file "%s" does not exist!' % CLI_OPTIONS.multisigFile
+      print('Multisig file "%s" does not exist!' % CLI_OPTIONS.multisigFile)
    else:
       MULTISIG_FILE  = CLI_OPTIONS.multisigFile
 
@@ -578,20 +581,20 @@ if not CLI_OPTIONS.rpcport == DEFAULT:
 
 
 if sys.argv[0]=='ArmoryQt.py':
-   print '********************************************************************************'
-   print 'Loading Armory Engine:'
-   print '   Armory Version:      ', getVersionString(BTCARMORY_VERSION)
-   print '   Armory Build:        ', BTCARMORY_BUILD
-   print '   PyBtcWallet  Version:', getVersionString(PYBTCWALLET_VERSION)
-   print 'Detected Operating system:', OS_NAME
-   print '   OS Variant            :', OS_VARIANT
-   print '   User home-directory   :', USER_HOME_DIR
-   print '   Satoshi BTC directory :', BTC_HOME_DIR
-   print '   Armory home dir       :', ARMORY_HOME_DIR
-   print '   ArmoryDB directory     :', ARMORY_DB_DIR
-   print '   Armory settings file  :', SETTINGS_PATH
-   print '   Armory log file       :', ARMORY_LOG_FILE
-   print '   Do wallet checking    :', DO_WALLET_CHECK
+   print('********************************************************************************'
+   print('Loading Armory Engine:'
+   print('   Armory Version:      ', getVersionString(BTCARMORY_VERSION)
+   print('   Armory Build:        ', BTCARMORY_BUILD
+   print('   PyBtcWallet  Version:', getVersionString(PYBTCWALLET_VERSION)
+   print('Detected Operating system:', OS_NAME
+   print('   OS Variant            :', OS_VARIANT
+   print('   User home-directory   :', USER_HOME_DIR
+   print('   Satoshi BTC directory :', BTC_HOME_DIR
+   print('   Armory home dir       :', ARMORY_HOME_DIR
+   print('   ArmoryDB directory     :', ARMORY_DB_DIR
+   print('   Armory settings file  :', SETTINGS_PATH
+   print('   Armory log file       :', ARMORY_LOG_FILE
+   print('   Do wallet checking    :', DO_WALLET_CHECK
 
 
 
@@ -704,7 +707,7 @@ def execAndWait(cli_str, timeout=0, useStartInfo=True):
    while process.poll() == None:
       time.sleep(0.1)
       if timeout>0 and (RightNow() - start)>timeout:
-         print 'Process exceeded timeout, killing it'
+         print('Process exceeded timeout, killing it'
          killProcess(pid)
    out,err = process.communicate()
    return [out,err]
@@ -784,7 +787,7 @@ def LOGEXCEPT(msg, *a):
 
 def chopLogFile(filename, size):
    if not os.path.exists(filename):
-      print 'Log file doesn\'t exist [yet]'
+      print('Log file doesn\'t exist [yet]'
       return
 
    logFile = open(filename, 'r')
@@ -895,7 +898,7 @@ def LOGRAWDATA(rawStr, loglevel=DEFAULT_RAWDATA_LOGLEVEL):
 
 cpplogfile = None
 if CLI_OPTIONS.logDisable:
-   print 'Logging is disabled'
+   print('Logging is disabled'
    rootLogger.disabled = True
 
 
@@ -1741,7 +1744,7 @@ def isLikelyDataType(theStr, dtype=None):
 
 cpplogfile = None
 if CLI_OPTIONS.logDisable:
-   print 'Logging is disabled'
+   print('Logging is disabled'
    rootLogger.disabled = True
 
 
@@ -1870,7 +1873,7 @@ def pprintHex(theStr, indent='', withAddr=True, major=8, minor=8):
 
 def pprintDiff(str1, str2, indent=''):
    if not len(str1)==len(str2):
-      print 'pprintDiff: Strings are different length!'
+      print('pprintDiff: Strings are different length!'
       return
 
    byteDiff = []
@@ -1886,7 +1889,7 @@ def pprintDiff(str1, str2, indent=''):
 ##### Switch endian-ness #####
 def hex_switchEndian(s):
    """ Switches the endianness of a hex string (in pairs of hex chars) """
-   pairList = [s[i]+s[i+1] for i in xrange(0,len(s),2)]
+   pairList = [s[i]+s[i+1] for i in range(0,len(s),2)]
    return ''.join(pairList[::-1])
 def binary_switchEndian(s):
    """ Switches the endianness of a binary string """
@@ -2435,12 +2438,12 @@ def CreateQRMatrix(dataToEncode, errLevel=QRErrorCorrectLevel.L):
 
 
 # The following params are for the Bitcoin elliptic curves (secp256k1)
-SECP256K1_MOD   = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2FL
-SECP256K1_ORDER = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141L
-SECP256K1_B     = 0x0000000000000000000000000000000000000000000000000000000000000007L
-SECP256K1_A     = 0x0000000000000000000000000000000000000000000000000000000000000000L
-SECP256K1_GX    = 0x79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798L
-SECP256K1_GY    = 0x483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8L
+SECP256K1_MOD   = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F
+SECP256K1_ORDER = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141
+SECP256K1_B     = 0x0000000000000000000000000000000000000000000000000000000000000007
+SECP256K1_A     = 0x0000000000000000000000000000000000000000000000000000000000000000
+SECP256K1_GX    = 0x79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798
+SECP256K1_GY    = 0x483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8
 
 ################################################################################
 ################################################################################
@@ -2660,7 +2663,7 @@ def createTestingSubsets( fragIndices, M, maxTestCount=20):
 
       if numCombo <= maxTestCount:
          LOGINFO('Testing all %s combinations...' % numCombo)
-         for x in xrange(2**numIdx):
+         for x in range(2**numIdx):
             bits = int_to_bitset(x)
             if not bits.count('1') == M:
                continue
@@ -3183,15 +3186,17 @@ class PyBackgroundThread(threading.Thread):
 # Define a decorator that allows the function to be called asynchronously
 def AllowAsync(func):
    def wrappedFunc(*args, **kwargs):
-      if not 'async' in kwargs or kwargs['async']==False:
+      # Support both 'async' (deprecated due to Python 3 keyword) and 'async_'
+      async_key = 'async_' if 'async_' in kwargs else 'async'
+      if not async_key in kwargs or kwargs[async_key]==False:
          # Run the function normally
-         if 'async' in kwargs:
-            del kwargs['async']
+         if async_key in kwargs:
+            del kwargs[async_key]
          return func(*args, **kwargs)
       else:
          # Run the function as a background thread
-         passAsync = kwargs['async']
-         del kwargs['async']
+         passAsync = kwargs[async_key]
+         del kwargs[async_key]
 
          thr = PyBackgroundThread(func, *args, **kwargs)
          thr.passAsync = passAsync
@@ -3746,11 +3751,11 @@ def isInternetAvailable(forceOnline = False):
       internetStatus = INTERNET_STATUS.DidNotCheck
    else:
       try:
-         import urllib2
+         import urllib.request as urllib2
          urllib2.urlopen('http://google.com', timeout=CLI_OPTIONS.nettimeout)
          internetStatus = INTERNET_STATUS.Available
       except ImportError:
-         LOGERROR('No module urllib2 -- cannot determine if internet is '
+         LOGERROR('No module urllib.request -- cannot determine if internet is '
             'available')
       except urllib2.URLError:
          # In the extremely rare case that google might be down (or just to try

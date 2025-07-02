@@ -359,7 +359,7 @@ class TorrentDownloadManager(object):
 
    #############################################################################
    def startDownload(self):
-      return self.doTheDownloadThing(async=True)
+      return self.doTheDownloadThing(async_=True)
 
    #############################################################################
    @AllowAsync
@@ -414,7 +414,7 @@ class TorrentDownloadManager(object):
                                  upnp = upnp_type, 
                                  randomizer = config['random_port'])
                break
-            except socketerror, e:
+            except socketerror as e:
                if upnp_type and e == UPnP_ERROR:
                   LOGWARN('WARNING: COULD NOT FORWARD VIA UPnP')
                   upnp_type = 0
@@ -504,21 +504,21 @@ if __name__=="__main__":
                     **kws):
       
       if fractionDone:
-         print 'TorrentThread: %0.1f%% done;' % (fractionDone*100),
+         print('TorrentThread: %0.1f%% done;' % (fractionDone*100),
 
       if timeEst:
-         print ', about %s remaining' %  secondsToHumanTime(timeEst), 
+         print(', about %s remaining' %  secondsToHumanTime(timeEst), 
 
       if activity:
-         print ' (%s)'%activity
+         print(' (%s)'%activity
       else:
-         print ''
+         print(''
 
       sys.stdout.flush()
 
    # Finish funct will still move file.partial to file, this is everything else
    def notifyFinished():
-      print 'TorrentThread: Finished downloading at %s' % unixTimeToFormatStr(RightNow())
+      print('TorrentThread: Finished downloading at %s' % unixTimeToFormatStr(RightNow())
       sys.stdout.flush()
       
 
@@ -526,20 +526,20 @@ if __name__=="__main__":
    tdm.setCallback('finishedFunc', notifyFinished)
    tdm.setSecondsBetweenUpdates(1)
 
-   thr = tdm.startDownload(async=True)
+   thr = tdm.startDownload(async_=True)
 
    # The above call was asynchronous
    while not thr.isFinished():
-      print 'MainThread:    Still downloading;',
+      print('MainThread:    Still downloading;',
       if tdm.getLastStats('downRate'):
-         print ' Last dl speed: %0.1f kB/s' % (tdm.getLastStats('downRate')/1024.)
+         print(' Last dl speed: %0.1f kB/s' % (tdm.getLastStats('downRate')/1024.)
       else: 
-         print ''
+         print(''
       sys.stdout.flush()
       sleep(10)
        
    
-   print 'Finished downloading!  Exiting...'
+   print('Finished downloading!  Exiting...'
 
 
 

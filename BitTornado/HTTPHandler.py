@@ -158,7 +158,7 @@ class HTTPHandler:
     def log(self, ip, ident, username, header,
             responsecode, length, referrer, useragent):
         year, month, day, hour, minute, second, a, b, c = time.localtime(time.time())
-        print '%s %s %s [%02d/%3s/%04d:%02d:%02d:%02d] "%s" %i %i "%s" "%s"' % (
+        print('%s %s %s [%02d/%3s/%04d:%02d:%02d:%02d] "%s" %i %i "%s" "%s"' % (
             ip, ident, username, day, months[month], year, hour,
             minute, second, header, responsecode, length, referrer, useragent)
         t = clock()

@@ -26,9 +26,9 @@ def extractSignedDataFromVersionsDotTxt(wholeFile, doVerify=True):
       LOGERROR('No signed data block found')
       return ''
 
-   print 'MESSAGE:  '
+   print('MESSAGE:  '
    print MSGRAW
-   print 'SIGNATURE:'
+   print('SIGNATURE:'
    print SIGHEX
 
    
@@ -42,7 +42,7 @@ def extractSignedDataFromVersionsDotTxt(wholeFile, doVerify=True):
          LOGERROR('Signed data block failed verification!')
          return ''
       else:
-         print 'SIGNATURE IS GOOD!'
+         print('SIGNATURE IS GOOD!'
 
 
    return MSGRAW
@@ -74,10 +74,10 @@ def parseLinkList(theData):
 if __name__=='__main__':
    fn = 'versions.txt'
    if not os.path.exists(fn):
-      print 'File does not exist!'
+      print('File does not exist!'
       fn = '../versions.txt'
       if not os.path.exists(fn):
-         print 'Really does not exist. Aborting.' 
+         print('Really does not exist. Aborting.' 
          exit(1)
 
    f = open(fn, 'r')
@@ -90,9 +90,9 @@ if __name__=='__main__':
    for dl in DICT:
       print dl.upper(), VER[dl]
       for theOS in DICT[dl]:
-         print '   ' + dl + '-' + theOS
-         print '      ', DICT[dl][theOS][0]
-         print '      ', DICT[dl][theOS][1]
+         print('   ' + dl + '-' + theOS
+         print('      ', DICT[dl][theOS][0]
+         print('      ', DICT[dl][theOS][1]
 
    msgVerified = extractSignedDataFromVersionsDotTxt(allData)
       

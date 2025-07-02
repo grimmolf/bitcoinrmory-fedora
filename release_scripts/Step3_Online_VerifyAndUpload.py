@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /usr/bin/python3
 ################################################################################
 #                                                                              #
 # Copyright (C) 2011-2015, Armory Technologies, Inc.                           #
@@ -148,10 +148,10 @@ jsonOut['Downloads'] = uploads
 print json.dumps(jsonOut, indent=4)
 
 for upl in uploads:
-   print 'Going to upload:'
+   print('Going to upload:'
    for key,val in upl.iteritems():
-      print '   ', key.ljust(10), ':', val
-   print ''
+      print('   ', key.ljust(10), ':', val
+   print(''
 
 
 

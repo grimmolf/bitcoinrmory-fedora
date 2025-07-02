@@ -125,6 +125,6 @@ class BinaryUnpacker(object):
          return binOut
 
       LOGERROR('Var Type not recognized!  VarType = %d', varType)
-      raise UnpackerError, "Var type not recognized!  VarType="+str(varType)
+      raise UnpackerError("Var type not recognized!  VarType="+str(varType))
 
 ################################################################################

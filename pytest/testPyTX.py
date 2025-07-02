@@ -337,7 +337,7 @@ class PyTXTest(TiabTest):
       txoutA.value = 50 * ONE_BTC
       txoutA.binScript = '\x76\xa9\x14' + addrA.getAddr160() + '\x88\xac'
       # Test pprint
-      print '\nTest pretty print PyTxIn, expect PrevTXHash all 0s'
+      print('\nTest pretty print PyTxIn, expect PrevTXHash all 0s'
       testTxIn.pprint()
    
       # test binary unpacker in unserialize
@@ -345,7 +345,7 @@ class PyTXTest(TiabTest):
       self.assertEqual(txoutA.getScript(), testTxOut.getScript())
       self.assertEqual(txoutA.value, testTxOut.getValue())
       # Test pprint
-      print '\nTest pretty print PyTxOut'
+      print('\nTest pretty print PyTxOut'
       testTxOut.pprint()
       
       tx1 = PyTx()

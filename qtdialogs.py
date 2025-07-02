@@ -15,8 +15,9 @@ import sys
 import time
 from zipfile import ZipFile, ZIP_DEFLATED
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
 
 from armoryengine.ALL import *
 from armorycolors import Colors, htmlColor
@@ -3114,7 +3115,7 @@ class DlgImportAddress(ArmoryDialog):
          addr160 = convertKeyDataToAddress(privKey=binKeyData)
          addrStr = hash160_to_addrStr(addr160)
 
-      except InvalidHashError, e:
+      except InvalidHashError as e:
          QMessageBox.warning(self, 'Entry Error',
             'The private key data you supplied appears to '
             'contain a consistency check.  This consistency '
@@ -3122,12 +3123,12 @@ class DlgImportAddress(ArmoryDialog):
             'key data correctly.', QMessageBox.Ok)
          LOGERROR('Private key consistency check failed.')
          return
-      except BadInputError, e:
+      except BadInputError as e:
          QMessageBox.critical(self, 'Invalid Data', 'Something went terribly '
             'wrong!  (key data unrecognized)', QMessageBox.Ok)
          LOGERROR('Unrecognized key data!')
          return
-      except CompressedKeyError, e:
+      except CompressedKeyError as e:
          QMessageBox.critical(self, 'Unsupported key type', 'You entered a key '
             'for an address that uses a compressed public key, usually produced '
             'in Bitcoin-Qt/bitcoind wallets created after version 0.6.0.  Armory '
@@ -3385,9 +3386,9 @@ class DlgImportAddress(ArmoryDialog):
                   nImport += 1
                else:
                   nAlready += 1
-            except Exception, msg:
-               # print '***ERROR importing:', addrStr
-               # print '         Error Msg:', msg
+            except Exception as msg:
+               # print('***ERROR importing:', addrStr
+               # print('         Error Msg:', msg
                # nError += 1
                LOGERROR('Problem importing: %s: %s', addrStr, msg)
                raise
@@ -10323,7 +10324,7 @@ class DlgNotificationWithDNAA(ArmoryDialog):
 
       # Setup the long descr
       def openLink(url):
-         #print 'opening ', url
+         #print('opening ', url
          import webbrowser
          webbrowser.open(str(url))
 
@@ -10954,8 +10955,8 @@ class DlgInstallLinux(ArmoryDialog):
 ################################################################################
 def tryInstallLinux(main):
    def doit():
-      #print '\n'
-      #print '***** Executing auto-install in linux...'
+      #print('\n'
+      #print('***** Executing auto-install in linux...'
       out, err = execAndWait('gksudo "apt-get remove -y bitcoin-qt bitcoind"', \
                              timeout=20)
       out, err = execAndWait(('gksudo apt-add-repository ppa:bitcoin/bitcoin; '
@@ -11079,7 +11080,7 @@ class DlgDownloadFile(ArmoryDialog):
       def startBackgroundDownload(dlg):
          thr = PyBackgroundThread(dlg.startDL)
          thr.start()
-      #print 'Starting download in 1s...'
+      #print('Starting download in 1s...'
       from twisted.internet import reactor
       reactor.callLater(1, startBackgroundDownload, self)
       self.main.extraHeartbeatSpecial.append(self.checkDownloadProgress)
@@ -12009,7 +12010,7 @@ class DlgFragBackup(ArmoryDialog):
       M = self.M
       sec = 'secure.' if doMask else ''
       defaultFn = 'wallet_%s_%s_num%d_need%d.%sfrag' % (wid, pref, fnum, M, sec)
-      #print 'FragFN:', defaultFn
+      #print('FragFN:', defaultFn
       savepath = self.main.getFileSave(tr('Save Fragment'), \
                                        [tr('Wallet Fragments (*.frag)')], \
                                        defaultFn)
@@ -14536,7 +14537,7 @@ class DlgCorruptWallet(DlgProgress):
       for wlt in self.walletList:
          self.main.removeWalletFromApplication(wlt.uniqueIDB58)
 
-      FixWalletList(self.walletList, self, Progress=self.UpdateText, async=True)
+      FixWalletList(self.walletList, self, Progress=self.UpdateText, async_=True)
       self.adjustSize()
 
    def ProcessWallet(self, mode=RECOVERMODE.Full):
@@ -14570,7 +14571,7 @@ class DlgCorruptWallet(DlgProgress):
       
       self.checkMode = mode
       ParseWallet(wltPath, wlt, mode, self, 
-                             Progress=self.UpdateText, async=True)
+                             Progress=self.UpdateText, async_=True)
       
    def UpdateDlg(self, text=None, HBar=None, Title=None):
       if text is not None: self.lblDesc.setText(text)

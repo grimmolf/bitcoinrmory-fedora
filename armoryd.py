@@ -305,9 +305,9 @@ class Armory_Json_Rpc_Server(jsonrpc.JSONRPC):
       # Try to decipher the Tx and make sure it's actually signed.
       txObj = UnsignedTransaction().unserializeAscii(allData)
       if not txObj:
-         raise InvalidTransaction, "file does not contain a valid tx"
+         raise InvalidTransaction("file does not contain a valid tx")
       if not txObj.verifySigsAllInputs():
-         raise IncompleteTransaction, "transaction needs more signatures"
+         raise IncompleteTransaction("transaction needs more signatures")
 
       pytx = txObj.getSignedPyTx()
       newTxHash = pytx.getHash()
@@ -1931,7 +1931,7 @@ class Armory_Json_Rpc_Server(jsonrpc.JSONRPC):
          fee = wantfee
 
       if totalSend + fee <= 0:
-         raise InvalidTransaction, "You are not spending any coins. Not a valid transaction"
+         raise InvalidTransaction("You are not spending any coins. Not a valid transaction")
 
       lbox = None
       if spendFromLboxID is None:
@@ -1945,7 +1945,7 @@ class Armory_Json_Rpc_Server(jsonrpc.JSONRPC):
          utxoList = cppWlt.getSpendableTxOutListForValue(totalSend, IGNOREZC)
 
       if spendBal < totalSend + fee:
-         raise NotEnoughCoinsError, "You have %s satoshis which is not enough to send %s satoshis with a fee of %s." % (spendBal, totalSend, fee)
+         raise NotEnoughCoinsError("You have %s satoshis which is not enough to send %s satoshis with a fee of %s." % (spendBal, totalSend, fee))
 
       utxoSelect = PySelectCoins(utxoList, totalSend, fee)
 
@@ -1960,15 +1960,15 @@ class Armory_Json_Rpc_Server(jsonrpc.JSONRPC):
 
       if fee < minFeeRec:
          if wantfee:
-            raise NotEnoughCoinsError, "A fee of %s is necessary for this transaction to go through. You put %s as the fee."  % (minFeeRec, fee)
+            raise NotEnoughCoinsError("A fee of %s is necessary for this transaction to go through. You put %s as the fee."  % (minFeeRec, fee))
          if (totalSend + minFeeRec) > spendBal:
-            raise NotEnoughCoinsError, "You can't afford the fee!"
+            raise NotEnoughCoinsError("You can't afford the fee!")
          utxoSelect = PySelectCoins(utxoList, totalSend, minFeeRec)
          fee = minFeeRec
 
       # If we have no coins, bail out.
       if len(utxoSelect)==0:
-         raise CoinSelectError, "Coin selection failed. This shouldn't happen."
+         raise CoinSelectError("Coin selection failed. This shouldn't happen.")
 
       # Calculate the change.
       totalSelected = sum([u.getValue() for u in utxoSelect])
@@ -2087,7 +2087,7 @@ class Armory_Json_Rpc_Server(jsonrpc.JSONRPC):
          if displayInfo['WltID'] is not None:
             if displayInfo['WltID'] == self.curWlt.uniqueIDB58:
                if self.curWlt.useEncryption and self.curWlt.isLocked:
-                  raise WalletUnlockNeeded, "You need to unlock this wallet before you can sign this transaction"
+                  raise WalletUnlockNeeded("You need to unlock this wallet before you can sign this transaction")
                a160 = CheckHash160(ustxi.scrAddrs[0])
                addrObj = self.curWlt.getAddrByHash160(a160)
                ustxi.createAndInsertSignature(pytx, addrObj.binPrivKey32_Plain)
@@ -2099,7 +2099,7 @@ class Armory_Json_Rpc_Server(jsonrpc.JSONRPC):
                   addrObj = self.curWlt.getAddrByHash160(a160)
                   if addrObj:
                      if self.curWlt.useEncryption and self.curWlt.isLocked:
-                        raise WalletUnlockNeeded, "You need to unlock this wallet before you can sign this transaction"
+                        raise WalletUnlockNeeded("You need to unlock this wallet before you can sign this transaction")
                      ustxi.createAndInsertSignature(pytx, addrObj.binPrivKey32_Plain)
                      signed += 1
       LOGWARN("Signed transaction %s times" % signed)
@@ -3085,13 +3085,13 @@ class Armory_Daemon(object):
 
       elif action == NEW_ZC_ACTION:
          # for zero-confirmation transcations, do nothing for now.
-         print 'New ZC'
+         print('New ZC')
          for le in args:
             wltID = le.getWalletID()
             if wltID in self.WltMap:
-               print '   Wallet: %s, amount: %d' % (wltID, le.getValue())
+               print('   Wallet: %s, amount: %d' % (wltID, le.getValue()))
             elif wltID in self.lboxMap:
-               print '   Lockbox: %s, amount: %d' % (wltID, le.getValue())
+               print('   Lockbox: %s, amount: %d' % (wltID, le.getValue()))
 
       elif action == NEW_BLOCK_ACTION:
          #A new block has appeared, pull updated ledgers from the BDM, display
@@ -3245,7 +3245,7 @@ class Armory_Daemon(object):
          # Let's try to get everything set up for successful command execution.
          try:
             #if not proxyobj.__hasattr__(CLI_ARGS[0]):
-               #raise UnrecognizedCommand, 'No json command %s'%CLI_ARGS[0]
+               #raise UnrecognizedCommand('No json command %s'%CLI_ARGS[0])
             extraArgs = []
             for arg in ([] if len(CLI_ARGS)==1 else CLI_ARGS[1:]):
                # It is possible to pass in JSON-formatted data (e.g.,
@@ -3264,10 +3264,10 @@ class Armory_Daemon(object):
             # jsonrpc_getbalance(full)) and print results.
             result = proxyobj.__getattr__(CLI_ARGS[0])(*extraArgs)
             if type(result) in (unicode, str):
-               print result
+               print(result)
             else:
-               print json.dumps(result, indent=4, sort_keys=True, \
-                                cls=UniversalEncoder)
+               print(json.dumps(result, indent=4, sort_keys=True,
+                                cls=UniversalEncoder))
 
             # If there are any special cases where we wish to do some
             # post-processing on the client side, do it here.
@@ -3285,7 +3285,7 @@ class Armory_Daemon(object):
                           'jsoncommandargs': ([] if len(CLI_ARGS)==1 else CLI_ARGS[1:]),
                           'extrainfo': str(e) if len(e.args)<2 else e.args}}
 
-            print json.dumps( errordict, indent=4, sort_keys=True, cls=UniversalEncoder)
+            print(json.dumps( errordict, indent=4, sort_keys=True, cls=UniversalEncoder))
 
 
    #############################################################################
@@ -3335,10 +3335,9 @@ class Armory_Daemon(object):
          wltStatus = PyBtcWalletRecovery().ProcessWallet(None, self.curWlt, \
                                                          Mode=5)
          if wltStatus != 0:
-            print 'Wallet consistency check failed in wallet %s!!!' \
-                   % (self.curWlt.uniqueIDB58)
-            print 'Aborting...'
-
+            print('Wallet consistency check failed in wallet %s!!!' \
+                   % (self.curWlt.uniqueIDB58))
+            print('Aborting...')
             quit()
          else:
             self.lastChecked = RightNow()

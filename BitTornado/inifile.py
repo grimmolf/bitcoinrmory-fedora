@@ -49,7 +49,7 @@ def ini_write(f, d, comment=''):
             k = k.lower()
             if type(v) == DictType:
                 if DEBUG:
-                    print 'new section:' +k
+                    print('new section:' +k
                 if k:
                     assert not a.has_key(k)
                     a[k] = {}
@@ -64,7 +64,7 @@ def ini_write(f, d, comment=''):
                         vv = '"'+vv+'"'
                     aa[kk] = str(vv)
                     if DEBUG:
-                        print 'a['+k+']['+kk+'] = '+str(vv)
+                        print('a['+k+']['+kk+'] = '+str(vv)
             else:
                 aa = a['']
                 assert not aa.has_key(k)
@@ -74,7 +74,7 @@ def ini_write(f, d, comment=''):
                     v = '"'+v+'"'
                 aa[k] = str(v)
                 if DEBUG:
-                    print 'a[\'\']['+k+'] = '+str(v)
+                    print('a[\'\']['+k+'] = '+str(v)
         r = open(f,'w')
         if comment:
             for c in comment.split('\n'):
@@ -104,7 +104,7 @@ def ini_write(f, d, comment=''):
 
 if DEBUG:
     def errfunc(lineno, line, err):
-        print '('+str(lineno)+') '+err+': '+line
+        print('('+str(lineno)+') '+err+': '+line
 else:
     errfunc = lambda lineno, line, err: None
 
@@ -114,7 +114,7 @@ def ini_read(f, errfunc = errfunc):
         ll = r.readlines()
         d = {}
         dd = {'':d}
-        for i in xrange(len(ll)):
+        for i in range(len(ll)):
             l = ll[i]
             l = l.strip()
             if not l:

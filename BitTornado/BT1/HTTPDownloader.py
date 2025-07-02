@@ -114,7 +114,7 @@ class SingleDownload:
             r = self.connection.getresponse()
             self.connection_status = r.status
             self.received_data = r.read()
-        except Exception, e:
+        except Exception as e:
             self.error = 'error accessing http seed: '+str(e)
             try:
                 self.connection.close()
@@ -177,7 +177,7 @@ class SingleDownload:
     
     def _get_requests(self):
         self.requests = []
-        self.request_size = 0L
+        self.request_size = 0
         while self.downloader.storage.do_I_have_requests(self.index):
             r = self.downloader.storage.new_request(self.index)
             self.requests.append(r)
@@ -185,7 +185,7 @@ class SingleDownload:
         self.requests.sort()
 
     def _fulfill_requests(self):
-        start = 0L
+        start = 0
         success = True
         while self.requests:
             begin, length = self.requests.pop(0)

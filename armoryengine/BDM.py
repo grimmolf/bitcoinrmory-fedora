@@ -314,7 +314,7 @@ class BlockDataManager(object):
       if forInit == False:
       # Check for the existence of the Bitcoin-Qt directory         
          if not os.path.exists(self.btcdir):
-            raise FileExistsError, ('Directory does not exist: %s' % self.btcdir)
+            raise FileExistsError(('Directory does not exist: %s' % self.btcdir))
    
          blkdir = os.path.join(self.btcdir, 'blocks')
          blk1st = os.path.join(blkdir, 'blk00000.dat')
@@ -322,7 +322,7 @@ class BlockDataManager(object):
          # ... and its blk000X.dat files
          if not os.path.exists(blk1st):
             LOGERROR('Blockchain data not available: %s', blk1st)
-            raise FileExistsError, ('Blockchain data not available: %s' % blk1st)
+            raise FileExistsError(('Blockchain data not available: %s' % blk1st))
 
       blockdir = blkdir
       armoryDBDir = self.armoryDBDir

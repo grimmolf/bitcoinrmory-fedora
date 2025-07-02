@@ -242,7 +242,7 @@ class Tracker:
                 statefiletemplate(tempstate)
                 self.state = tempstate
             except:
-                print '**warning** statefile '+self.dfile+' corrupt; resetting'
+                print('**warning** statefile '+self.dfile+' corrupt; resetting'
         self.downloads = self.state.setdefault('peers', {})
         self.completed = self.state.setdefault('completed', {})
 
@@ -312,8 +312,8 @@ class Tracker:
 
         if config['allowed_list']:
             if config['allowed_dir']:
-                print '**warning** allowed_dir and allowed_list options cannot be used together'
-                print '**warning** disregarding allowed_dir'
+                print('**warning** allowed_dir and allowed_list options cannot be used together'
+                print('**warning** disregarding allowed_dir'
                 config['allowed_dir'] = ''
             self.allowed = self.state.setdefault('allowed_list',{})
             self.allowed_list_mtime = 0
@@ -583,15 +583,15 @@ class Tracker:
         
         myid = params('peer_id','')
         if len(myid) != 20:
-            raise ValueError, 'id not of length 20'
+            raise ValueError('id not of length 20')
         if event not in ['started', 'completed', 'stopped', 'snooped', None]:
-            raise ValueError, 'invalid event'
+            raise ValueError('invalid event')
         port = long(params('port',''))
         if port < 0 or port > 65535:
-            raise ValueError, 'invalid port'
+            raise ValueError('invalid port')
         left = long(params('left',''))
         if left < 0:
-            raise ValueError, 'invalid amount left'
+            raise ValueError('invalid amount left')
         uploaded = long(params('uploaded',''))
         downloaded = long(params('downloaded',''))
 
@@ -753,7 +753,7 @@ class Tracker:
             shuffle(cache[1])
             shuffle(cache[2])
             self.cached[infohash][return_type] = cache
-            for rr in xrange(len(self.cached[infohash])):
+            for rr in range(len(self.cached[infohash])):
                 if rr != return_type:
                     try:
                         self.cached[infohash][rr][1].extend(vv[rr])
@@ -851,7 +851,7 @@ class Tracker:
             
             infohash = params('info_hash')
             if not infohash:
-                raise ValueError, 'no info hash'
+                raise ValueError('no info hash')
 
             notallowed = self.check_allowed(infohash, paramslist)
             if notallowed:
@@ -861,7 +861,7 @@ class Tracker:
 
             rsize = self.add_data(infohash, event, ip, paramslist)
 
-        except ValueError, e:
+        except ValueError as e:
             return (400, 'Bad Request', {'Content-Type': 'text/plain'}, 
                 'you sent me garbage - ' + str(e))
 
@@ -905,7 +905,7 @@ class Tracker:
 
     def natchecklog(self, peerid, ip, port, result):
         year, month, day, hour, minute, second, a, b, c = localtime(time())
-        print '%s - %s [%02d/%3s/%04d:%02d:%02d:%02d] "!natcheck-%s:%i" %i 0 - -' % (
+        print('%s - %s [%02d/%3s/%04d:%02d:%02d:%02d] "!natcheck-%s:%i" %i 0 - -' % (
             ip, quote(peerid), day, months[month], year, hour, minute, second,
             ip, port, result)
 
@@ -972,7 +972,7 @@ class Tracker:
                 (self.allowed, added, garbage2) = r
                 self.state['allowed_list'] = self.allowed
             except (IOError, OSError):
-                print '**warning** unable to read allowed torrent list'
+                print('**warning** unable to read allowed torrent list'
                 return
             self.allowed_list_mtime = os.path.getmtime(f)
 
@@ -992,7 +992,7 @@ class Tracker:
                 self.allowed_IPs.read_fieldlist(f)
                 self.allowed_ip_mtime = os.path.getmtime(f)
             except (IOError, OSError):
-                print '**warning** unable to read allowed_IP list'
+                print('**warning** unable to read allowed_IP list'
                 
         f = self.config['banned_ips']
         if f and self.banned_ip_mtime != os.path.getmtime(f):
@@ -1001,7 +1001,7 @@ class Tracker:
                 self.banned_IPs.read_rangelist(f)
                 self.banned_ip_mtime = os.path.getmtime(f)
             except (IOError, OSError):
-                print '**warning** unable to read banned_IP list'
+                print('**warning** unable to read banned_IP list'
                 
 
     def delete_peer(self, infohash, peerid):
@@ -1039,9 +1039,9 @@ def track(args):
         return
     try:
         config, files = parseargs(args, defaults, 0, 0)
-    except ValueError, e:
-        print 'error: ' + str(e)
-        print 'run with no arguments for parameter explanations'
+    except ValueError as e:
+        print('error: ' + str(e))
+        print('run with no arguments for parameter explanations')
         return
     r = RawServer(Event(), config['timeout_check_interval'],
                   config['socket_timeout'], ipv6_enable = config['ipv6_enabled'])
@@ -1050,16 +1050,16 @@ def track(args):
            reuse = True, ipv6_socket_style = config['ipv6_binds_v4'])
     r.listen_forever(HTTPHandler(t.get, config['min_time_between_log_flushes']))
     t.save_state()
-    print '# Shutting down: ' + isotime()
+    print('# Shutting down: ' + isotime())
 
 def size_format(s):
     if (s < 1024):
         r = str(s) + 'B'
     elif (s < 1048576):
         r = str(int(s/1024)) + 'KiB'
-    elif (s < 1073741824L):
+    elif (s < 1073741824):
         r = str(int(s/1048576)) + 'MiB'
-    elif (s < 1099511627776L):
+    elif (s < 1099511627776):
         r = str(int((s/1073741824.0)*100.0)/100.0) + 'GiB'
     else:
         r = str(int((s/1099511627776.0)*100.0)/100.0) + 'TiB'

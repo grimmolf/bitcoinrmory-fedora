@@ -301,7 +301,7 @@ class Rerequester:
             try:
                 r = bdecode(data, sloppy=1)
                 check_peers(r)
-            except ValueError, e:
+            except ValueError as e:
                 if self.lock.trip(l):
                     self.errorcodes['bad_data'] = 'bad data from tracker - ' + str(e)
                     self.lock.unwait(l)
@@ -337,7 +337,7 @@ class Rerequester:
         p = r['peers']
         peers = []
         if type(p) == type(''):
-            for x in xrange(0, len(p), 6):
+            for x in range(0, len(p), 6):
                 ip = '.'.join([str(ord(i)) for i in p[x:x+4]])
                 port = (ord(p[x+4]) << 8) | ord(p[x+5])
                 peers.append(((ip, port), 0))
@@ -375,7 +375,7 @@ class SuccessLock:
     def __init__(self):
         self.lock = Lock()
         self.pause = Lock()
-        self.code = 0L
+        self.code = 0
         self.success = False
         self.finished = True
 
@@ -388,7 +388,7 @@ class SuccessLock:
         if not self.pause.locked():
             self.pause.acquire()
         self.first = True
-        self.code += 1L
+        self.code += 1
         self.lock.release()
         return self.code
 

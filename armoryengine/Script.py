@@ -183,19 +183,19 @@ class PyScriptProcessor(object):
          txInIndex = self.txInIndex
 
       if self.script1==None or self.txNew==None:
-         raise VerifyScriptError, 'Cannot verify transactions, without setTxObjects call first!'
+         raise VerifyScriptError('Cannot verify transactions, without setTxObjects call first!')
 
       # Execute TxIn script first
       self.stack = []
       exitCode1 = self.executeScript(self.script1, self.stack)
 
       if not exitCode1 == SCRIPT_NO_ERROR:
-         raise VerifyScriptError, ('First script failed!  Exit Code: ' + str(exitCode1))
+         raise VerifyScriptError(('First script failed!  Exit Code: ' + str(exitCode1)))
 
       exitCode2 = self.executeScript(self.script2, self.stack)
 
       if not exitCode2 == SCRIPT_NO_ERROR:
-         raise VerifyScriptError, ('Second script failed!  Exit Code: ' + str(exitCode2))
+         raise VerifyScriptError(('Second script failed!  Exit Code: ' + str(exitCode2)))
 
       return self.stack[-1]==1
 
@@ -321,7 +321,7 @@ class PyScriptProcessor(object):
             #else:
                #return binary_to_hex(s)
 
-      #print '  '.join([pr(i) for i in stack])
+      #print('  '.join([pr(i) for i in stack])
       #print opnames[opcode][:12].ljust(12,' ') + ':',
       ##########################################################################
       ##########################################################################

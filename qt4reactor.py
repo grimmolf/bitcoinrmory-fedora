@@ -45,8 +45,8 @@ from twisted.internet import posixbase
 from twisted.python.runtime import platformType, platform
 
 try:
-    from PyQt4.QtCore import QSocketNotifier, QObject, SIGNAL, QTimer, QCoreApplication
-    from PyQt4.QtCore import QEventLoop
+    from PyQt5.QtCore import QSocketNotifier, QObject, SIGNAL, QTimer, QCoreApplication
+    from PyQt5.QtCore import QEventLoop
 except ImportError:
     from PySide.QtCore import QSocketNotifier, QObject, SIGNAL, QTimer, QCoreApplication
     from PySide.QtCore import QEventLoop
@@ -303,7 +303,7 @@ class QtEventReactor(QtReactor):
                 elif val == WAIT_TIMEOUT:
                     pass
                 else:
-                    #print 'Got an unexpected return of %r' % val
+                    #print('Got an unexpected return of %r' % val
                     return
 
 

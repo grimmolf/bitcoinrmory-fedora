@@ -47,7 +47,7 @@ from .util import (
 )
 
 
-xrange = six.moves.xrange
+range = six.moves.range
 
 log = logging.getLogger(__name__)
 
@@ -156,7 +156,7 @@ class HTTPConnectionPool(ConnectionPool, RequestMethods):
         self.proxy_headers = _proxy_headers or {}
 
         # Fill the queue up so that doing get() on it will block properly
-        for _ in xrange(maxsize):
+        for _ in range(maxsize):
             self.pool.put(None)
 
         # These are mostly for testing and debugging purposes.

@@ -24,10 +24,10 @@ def parsetorrentlist(filename, parsed):
         l = l.strip()
         try:
             if len(l) != 40:
-                raise ValueError, 'bad line'
+                raise ValueError('bad line')
             h = unhexlify(l)
         except:
-            print '*** WARNING *** could not parse line in torrent list: '+l
+            print('*** WARNING *** could not parse line in torrent list: '+l
         if parsed.has_key(h):
             del removed[h]
         else:

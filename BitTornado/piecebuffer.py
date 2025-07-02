@@ -21,14 +21,14 @@ class SingleBuffer:
         if DEBUG:
             print self.count
             '''
-            for x in xrange(6,1,-1):
+            for x in range(6,1,-1):
                 try:
                     f = inspect.currentframe(x).f_code
                     print (f.co_filename,f.co_firstlineno,f.co_name)
                     del f
                 except:
                     pass
-            print ''
+            print(''
             '''
         self.length = 0
 

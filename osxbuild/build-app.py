@@ -614,7 +614,7 @@ def compile_pyqt():
       execAndWait('python ./configure-ng.py --confirm-license --sip-incdir="%s"' % incDir, cwd=pyqtPath)
       execAndWait('make %s' % MAKEFLAGS, cwd=pyqtPath)
 
-   # Need to add pyrcc4 to the PATH
+   # Need to add pyrcc5 to the PATH
    execAndWait('make install', cwd=pyqtPath)
    pyrccPath = path.join(UNPACKDIR, 'PyQt-mac-gpl-%s/pyrcc' % pyQtVer)
    os.environ['PATH'] = '%s:%s' % (pyrccPath, os.environ['PATH'])

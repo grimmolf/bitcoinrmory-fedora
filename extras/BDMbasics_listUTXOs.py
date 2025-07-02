@@ -14,13 +14,13 @@ from armoryengine.ALL import *
 
 # Check that user actually supplied a wallet file
 if len(CLI_ARGS) < 1:
-   print 'Must supply path to wallet file as first argument!'
+   print('Must supply path to wallet file as first argument!'
    exit(1)
 
 # Check that wallet file exists
 walletPath = CLI_ARGS[0]
 if not os.path.exists(walletPath):
-   print 'Wallet file does not exist: "%s"' % walletPath
+   print('Wallet file does not exist: "%s"' % walletPath
    exit(1)
    
 # Read it into a PyBtcWallet object
@@ -34,7 +34,7 @@ cvShutdown = threading.Condition(None)
 def listUTXOs(*args):
    # Leverages armoryengine.CoinSelection.py to print all UTXOs
    # args is ignored -- we only care that this is called after BDM is loaded
-   print 'Printing UTXOs for wallet: ' + wlt.uniqueIDB58
+   print('Printing UTXOs for wallet: ' + wlt.uniqueIDB58
    utxos = wlt.getFullUTXOList()
    pprintUnspentTxOutList(utxos)
 
@@ -66,4 +66,4 @@ main thread exiting and the subsequent termination of the process.
 # This will pause the main thread until notification is received
 cvShutdown.acquire(); cvShutdown.wait(); cvShutdown.release()
    
-print '...Done'
+print('...Done'

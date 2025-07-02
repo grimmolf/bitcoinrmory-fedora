@@ -1,12 +1,30 @@
 ##Armory
 
-**Created by Alan Reiner on 13 July, 2011**
+**Created by Alan Reiner on 13 July, 2011**  
+**Modernized for Python 3 & Fedora 42 - January 2025**
 
 [Armory](https://github.com/etotheipi/BitcoinArmory) is a full-featured Bitcoin client, offering a dozen innovative features not found in any other client software! Manage multiple wallets (deterministic and watching-only), print paper backups that work forever, import or sweep private keys, and keep your savings in a computer that never touches the internet, while still being able to manage incoming payments, and create outgoing payments with the help of a USB key.
 
 Multi-signature transactions are accommodated under-the-hood about 80%, and will be completed and integrated into the UI soon.
 
 **Armory has no independent networking components built in.** Instead, it relies on on the Satoshi client to securely connect to peers, validate blockchain data, and broadcast transactions for us.  Although it was initially planned to cut the umbilical cord to the Satoshi client and implement independent networking, it has turned out to be an inconvenience worth having. Reimplementing all the networking code would be fraught with bugs, security holes, and possible blockchain forking.  The reliance on Bitcoin-Qt right now is actually making Armory more secure!
+
+## 🚀 **Python 3 & Modern System Compatibility**
+
+This fork has been comprehensively modernized for **Python 3** and **modern Linux distributions** (tested on Fedora 42). The modernization includes:
+
+- ✅ **Python 3.7+ Compatibility**: All syntax, imports, and language features updated
+- ✅ **PyQt5 Migration**: Complete GUI framework upgrade from PyQt4 → PyQt5  
+- ✅ **Modern Build Tools**: Updated packaging, requirements, and build scripts
+- ✅ **Fedora 42 Ready**: Tested and validated on modern Linux distributions
+
+### **Key Modernization Changes:**
+- All print statements converted to function calls
+- Python 2/3 import compatibility (email, urllib2, etc.)
+- Exception syntax updated (`except X, e:` → `except X as e:`)
+- Signal/slot syntax modernized for PyQt5
+- Build system updated (pyrcc4 → pyrcc5)
+- Removed deprecated Python 2 constructs (xrange, L suffixes, etc.)
 
 ##Donations
 

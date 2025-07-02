@@ -141,7 +141,7 @@ _moved_attributes = [
     MovedAttribute("reload_module", "__builtin__", "imp", "reload"),
     MovedAttribute("reduce", "__builtin__", "functools"),
     MovedAttribute("StringIO", "StringIO", "io"),
-    MovedAttribute("xrange", "__builtin__", "builtins", "xrange", "range"),
+    MovedAttribute("range", "__builtin__", "builtins", "range", "range"),
     MovedAttribute("zip", "itertools", "builtins", "izip", "zip"),
 
     MovedModule("builtins", "__builtin__"),
@@ -328,7 +328,7 @@ else:
 
 
     exec_("""def reraise(tp, value, tb=None):
-    raise tp, value, tb
+    raise tp(value, tb)
 """)
 
 

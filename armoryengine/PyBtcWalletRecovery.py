@@ -385,7 +385,7 @@ class PyBtcWalletRecovery(object):
                      returnError=False, Progress=emptyFunc):
 
       return self.ProcessWallet(WalletPath, None, Passphrase, Mode, None, 
-                                returnError, async=True, Progress=Progress)
+                                returnError, async_=True, Progress=Progress)
 
    ############################################################################
    @AllowAsync

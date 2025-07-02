@@ -116,7 +116,7 @@ class RateLimiter:
         if len(self.pings) < PING_SAMPLES+PING_DISCARDS:
             return
         if DEBUG:
-            print 'cycle'
+            print('cycle'
         pings = sum(self.pings[PING_DISCARDS:])
         del self.pings[:]
         if pings >= PING_THRESHHOLD:   # assume flooded
@@ -129,7 +129,7 @@ class RateLimiter:
             self.slots = int(sqrt(self.upload_rate*SLOTS_FACTOR))
             self.slotsfunc(self.slots)
             if DEBUG:
-                print 'adjust down to '+str(self.upload_rate)
+                print('adjust down to '+str(self.upload_rate)
             self.lasttime = clock()
             self.bytes_sent = 0
             self.autoadjustup = UP_DELAY_FIRST
@@ -143,7 +143,7 @@ class RateLimiter:
             self.slots = int(sqrt(self.upload_rate*SLOTS_FACTOR))
             self.slotsfunc(self.slots)
             if DEBUG:
-                print 'adjust up to '+str(self.upload_rate)
+                print('adjust up to '+str(self.upload_rate)
             self.lasttime = clock()
             self.bytes_sent = 0
             self.autoadjustup = UP_DELAY_NEXT

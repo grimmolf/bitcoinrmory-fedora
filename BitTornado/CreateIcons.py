@@ -31,7 +31,7 @@ icons = {
     "black.ico":
         "eJzt1zsOgkAYReFLLCztjJ2UlpLY485kOS7DpbgESwqTcQZDghjxZwAfyfl0" +
         "LIieGzUWSom/pan840rHnbSUtPHHX9Je9+tAh2ybNe8TZZ/vk8ajJ4zl6JVJ" +
-        "+xFx+0R03Djx1/2B8bcT9L/bt0+4Wq+4se8e/VTfMvGqb4n3nYiIGz+lvt9s" +
+        "+xFx+0R03Djx1/2B8bcT9/bt0+4Wq+4se8e/VTfMvGqb4n3nYiIGz+lvt9s" +
         "9EpE2T4xJN4xNFYWU6t+JWXuXDFzTom7SodSyi/S+iwtwjlJ80KaNY/C34rW" +
         "aT8nvK5uhF7ohn7Yqfb87kffLAAAAAAAAAAAAAAAAAAAGMUNy7dADg==",
     "blue.ico":
@@ -43,7 +43,7 @@ icons = {
     "green.ico":
         "eJzt1zEOgjAAheFHGBzdjJuMHsAdbybxNB7Do3gERwaT2mJIBCOWlqok/yc4" +
         "EP1fNDIoZfZRFLLPa5120krS1p72kvZ6XAeGHLtHouzrkTQePOFZDl5J2g+I" +
-        "+08Exz0nZt2PjH+coP/bvveEaY2L+/VN13/1PSbe9v0FfP+jTP6ziVmJkTQ+" +
+        "+08Exz0nZt2PjH+coP/bvveEaY2+/VN13/1PSbe9v0FfP+jTP6ziVmJkTQ+" +
         "MISZaO6SujSmyu3dkpmbdKil8iptLtLSnWdpUUn58yn3t6J39l/j3tc2XM91" +
         "Xd/tNHt296sfFgAAAAAAAAAAAAAAAAAATOIOVLEoDg==",
     "red.ico":

@@ -10,46 +10,46 @@ ints = (LongType, IntType)
 
 def check_info(info):
     if type(info) != DictType:
-        raise ValueError, 'bad metainfo - not a dictionary'
+        raise ValueError('bad metainfo - not a dictionary')
     pieces = info.get('pieces')
     if type(pieces) != StringType or len(pieces) % 20 != 0:
-        raise ValueError, 'bad metainfo - bad pieces key'
+        raise ValueError('bad metainfo - bad pieces key')
     piecelength = info.get('piece length')
     if type(piecelength) not in ints or piecelength <= 0:
-        raise ValueError, 'bad metainfo - illegal piece length'
+        raise ValueError('bad metainfo - illegal piece length')
     name = info.get('name')
     if type(name) != StringType:
-        raise ValueError, 'bad metainfo - bad name'
+        raise ValueError('bad metainfo - bad name')
     if not reg.match(name):
-        raise ValueError, 'name %s disallowed for security reasons' % name
+        raise ValueError('name %s disallowed for security reasons' % name)
     if info.has_key('files') == info.has_key('length'):
-        raise ValueError, 'single/multiple file mix'
+        raise ValueError('single/multiple file mix')
     if info.has_key('length'):
         length = info.get('length')
         if type(length) not in ints or length < 0:
-            raise ValueError, 'bad metainfo - bad length'
+            raise ValueError('bad metainfo - bad length')
     else:
         files = info.get('files')
         if type(files) != ListType:
             raise ValueError
         for f in files:
             if type(f) != DictType:
-                raise ValueError, 'bad metainfo - bad file value'
+                raise ValueError('bad metainfo - bad file value')
             length = f.get('length')
             if type(length) not in ints or length < 0:
-                raise ValueError, 'bad metainfo - bad length'
+                raise ValueError('bad metainfo - bad length')
             path = f.get('path')
             if type(path) != ListType or path == []:
-                raise ValueError, 'bad metainfo - bad path'
+                raise ValueError('bad metainfo - bad path')
             for p in path:
                 if type(p) != StringType:
-                    raise ValueError, 'bad metainfo - bad path dir'
+                    raise ValueError('bad metainfo - bad path dir')
                 if not reg.match(p):
-                    raise ValueError, 'path %s disallowed for security reasons' % p
-        for i in xrange(len(files)):
-            for j in xrange(i):
+                    raise ValueError('path %s disallowed for security reasons' % p)
+        for i in range(len(files)):
+            for j in range(i):
                 if files[i]['path'] == files[j]['path']:
-                    raise ValueError, 'bad metainfo - duplicate path'
+                    raise ValueError('bad metainfo - duplicate path')
 
 def check_message(message):
     if type(message) != DictType:

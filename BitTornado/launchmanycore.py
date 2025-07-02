@@ -177,7 +177,7 @@ class LaunchMany:
                                     ipv6_socket_style = config['ipv6_binds_v4'],
                                     upnp = upnp_type, randomizer = config['random_port'])
                     break
-                except socketerror, e:
+                except socketerror as e:
                     if upnp_type and e == UPnP_ERROR:
                         self.Output.message('WARNING: COULD NOT FORWARD VIA UPnP')
                         upnp_type = 0
@@ -301,7 +301,7 @@ class LaunchMany:
         c = self.counter
         self.counter += 1
         x = ''
-        for i in xrange(3):
+        for i in range(3):
             x = mapbase64[c & 0x3F]+x
             c >>= 6
         peer_id = createPeerID(x)

@@ -107,7 +107,7 @@ class AnnounceDataFetcher(object):
    #############################################################################
    def start(self):
       if not self.disabled:
-         self.loopThread = self.__runFetchLoop(async=True)
+         self.loopThread = self.__runFetchLoop(async_=True)
 
    #############################################################################
    def isDisabled(self):
@@ -270,14 +270,14 @@ class AnnounceDataFetcher(object):
    def __fetchFile(self, url, backupURL=None):
       LOGINFO('Fetching: %s', url)
       try:
-         import urllib2
+         import urllib.request as urllib2
          import socket
          LOGDEBUG('Downloading URL: %s' % url)
          socket.setdefaulttimeout(CLI_OPTIONS.nettimeout)
          urlobj = urllib2.urlopen(url, timeout=CLI_OPTIONS.nettimeout)
          return urlobj.read()
       except ImportError:
-         LOGERROR('No module urllib2 -- cannot download anything')
+         LOGERROR('No module urllib.request -- cannot download anything')
          return ''
       except (urllib2.URLError, urllib2.HTTPError):
          LOGERROR('Specified URL was inaccessible')
@@ -357,12 +357,12 @@ class AnnounceDataFetcher(object):
 
    #############################################################################
    # I'm taking a shortcut around adding all the threading code here
-   # Simply use @AllowAsync and only call with async=True.  Done.
+   # Simply use @AllowAsync and only call with async_=True.  Done.
    @AllowAsync
    def __runFetchLoop(self):
       """
       All this code runs in a separate thread (your app will freeze if 
-      you don't call this with the async=True argument).  It will 
+      you don't call this with the async_=True argument).  It will 
       periodically check for new announce data, and update members that
       are visible to other threads.
 

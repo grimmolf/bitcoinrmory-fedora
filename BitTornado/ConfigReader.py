@@ -226,7 +226,7 @@ class configReader:
         if (self.configMenuBox is not None):
             try:
                 self.configMenuBox.Close()
-            except wxPyDeadObjectError, e:
+            except wxPyDeadObjectError as e:
                 self.configMenuBox = None
 
         self.configMenuBox = wxFrame(None, -1, 'BitTorrent Preferences', size = (1,1),
@@ -640,7 +640,7 @@ class configReader:
         if self.configMenuBox is not None:
             try:
                 self.configMenuBox.Close ()
-            except wxPyDeadObjectError, e:
+            except wxPyDeadObjectError as e:
                 pass
             self.configMenuBox = None
 
@@ -656,7 +656,7 @@ class configReader:
         if (self.advancedMenuBox is not None):
             try:
                 self.advancedMenuBox.Close ()
-            except wxPyDeadObjectError, e:
+            except wxPyDeadObjectError as e:
                 self.advancedMenuBox = None
 
         self.advancedMenuBox = wxFrame(None, -1, 'BitTorrent Advanced Preferences', size = (1,1),
@@ -1063,6 +1063,6 @@ class configReader:
         if self.advancedMenuBox is not None:
             try:
                 self.advancedMenuBox.Close()
-            except wxPyDeadObjectError, e:
+            except wxPyDeadObjectError as e:
                 self.advancedMenuBox = None
 

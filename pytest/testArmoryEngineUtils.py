@@ -330,7 +330,7 @@ class ArmoryEngineTest(unittest.TestCase):
       def doLongOperation(throwError=False):
          j = '\xab'*32
          n = 20000
-         for i in xrange(n):
+         for i in range(n):
             j = hash160(j)
             if i==n/2 and throwError:
                raise ValueError('This is a forced error')

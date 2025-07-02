@@ -153,7 +153,7 @@ should prepare for OSErrors.
 
 A ValueError will be raised if Popen is called with invalid arguments.
 
-check_call() and check_output() will raise CalledProcessError, if the
+check_call() and check_output() will raise CalledProcessError(if the)
 called process returns a non-zero return code.
 
 
@@ -263,7 +263,7 @@ try:
         print >>sys.stderr, "Child was terminated by signal", -retcode
     else:
         print >>sys.stderr, "Child returned", retcode
-except OSError, e:
+except OSError as e:
     print >>sys.stderr, "Execution failed:", e
 
 
@@ -767,7 +767,7 @@ class Popen(object):
                 except EnvironmentError:
                     pass
 
-            raise exc_type, exc_value, exc_trace
+            raise exc_type(exc_value, exc_trace)
 
         if mswindows:
             if p2cwrite is not None:
@@ -985,7 +985,7 @@ class Popen(object):
                                          cwd,
                                          ctypes.byref(startup_info),
                                          ctypes.byref(p_i))
-            except pywintypes.error, e:
+            except pywintypes.error as e:
                 # Translate pywintypes.error to WindowsError, which is
                 # a subclass of OSError.  FIXME: We should really
                 # translate errno using _sys_errlist (or similar), but
@@ -1203,7 +1203,7 @@ class Popen(object):
                 os.closerange(3, but)
                 os.closerange(but + 1, MAXFD)
             else:
-                for i in xrange(3, MAXFD):
+                for i in range(3, MAXFD):
                     if i == but:
                         continue
                     try:
@@ -1480,7 +1480,7 @@ class Popen(object):
             while fd2file:
                 try:
                     ready = poller.poll()
-                except select.error, e:
+                except select.error as e:
                     if e.args[0] == errno.EINTR:
                         continue
                     raise
@@ -1529,7 +1529,7 @@ class Popen(object):
             while read_set or write_set:
                 try:
                     rlist, wlist, xlist = select.select(read_set, write_set, [])
-                except select.error, e:
+                except select.error as e:
                     if e.args[0] == errno.EINTR:
                         continue
                     raise
@@ -1613,7 +1613,7 @@ def _demo_posix():
     print "Trying a weird file..."
     try:
         print Popen(["/this/path/does/not/exist"]).communicate()
-    except OSError, e:
+    except OSError as e:
         if e.errno == errno.ENOENT:
             print "The file didn't exist.  I thought so..."
             print "Child traceback:"

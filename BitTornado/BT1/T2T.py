@@ -62,7 +62,7 @@ class T2TConnection:
         self.lastsuccessful = True
         self.newpeerdata = []
         if DEBUG:
-            print 'contacting %s for info_hash=%s' % (self.tracker, quote(self.hash))
+            print('contacting %s for info_hash=%s' % (self.tracker, quote(self.hash))
         self.rerequester.snoop(self.peers, self.callback)
 
     def callback(self):
@@ -92,7 +92,7 @@ class T2TConnection:
             print "%s with info_hash=%s gives error: '%s'" % (self.tracker, quote(self.hash), r)
         if r == self.rerequester.rejectedmessage + 'disallowed':   # whoops!
             if DEBUG:
-                print ' -- disallowed - deactivating'
+                print(' -- disallowed - deactivating'
             self.deactivate()
             self.disallow(self.tracker)   # signal other torrents on this tracker
             return
@@ -100,14 +100,14 @@ class T2TConnection:
             self.rejected += 1
             if self.rejected == 3:     # rejected 3 times
                 if DEBUG:
-                    print ' -- rejected 3 times - deactivating'
+                    print(' -- rejected 3 times - deactivating'
                 self.deactivate()
             return
         self.errors += 1
         if self.errors >= 3:                         # three or more errors in a row
             self.operatinginterval += self.interval  # lengthen the interval
             if DEBUG:
-                print ' -- lengthening interval to '+str(self.operatinginterval)+' seconds'
+                print(' -- lengthening interval to '+str(self.operatinginterval)+' seconds'
 
     def harvest(self):
         x = []

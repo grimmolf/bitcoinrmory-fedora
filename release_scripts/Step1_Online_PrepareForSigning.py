@@ -68,7 +68,7 @@ for pkgName,pkgInfo in masterPkgList.iteritems():
    if cmd=='cp':
       assert(len(cmdArgs)==1) 
       copyFrom = checkExists(cmdArgs[0] % verStr)
-      print 'Copying: %s --> %s' % (copyFrom, copyTo)
+      print('Copying: %s --> %s' % (copyFrom, copyTo)
       shutil.copy(copyFrom, copyTo)
    if cmd=='scp':
       assert(len(cmdArgs)==4) 

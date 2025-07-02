@@ -75,7 +75,7 @@ def make_meta_file(file, url, params = {}, flag = Event(),
             
     if piece_len_exp == 0:  # automatic
         size = calcsize(file)
-        if   size > 8L*1024*1024*1024:   # > 8 gig =
+        if   size > 8*1024*1024*1024:   # > 8 gig =
             piece_len_exp = 21          #   2 meg pieces
         elif size > 2*1024*1024*1024:   # > 2 gig =
             piece_len_exp = 20          #   1 meg pieces
@@ -128,7 +128,7 @@ def make_meta_file(file, url, params = {}, flag = Event(),
 def calcsize(file):
     if not isdir(file):
         return getsize(file)
-    total = 0L
+    total = 0
     for s in subfiles(abspath(file)):
         total += getsize(s[1])
     return total
@@ -157,15 +157,15 @@ def makeinfo(file, piece_length, encoding, flag, progress, progress_percent=1):
         subs.sort()
         pieces = []
         sh = sha()
-        done = 0L
+        done = 0
         fs = []
         totalsize = 0.0
-        totalhashed = 0L
+        totalhashed = 0
         for p, f in subs:
             totalsize += getsize(f)
 
         for p, f in subs:
-            pos = 0L
+            pos = 0
             size = getsize(f)
             fs.append({'length': size, 'path': uniconvertl(p, encoding)})
             h = open(f, 'rb')
@@ -195,7 +195,7 @@ def makeinfo(file, piece_length, encoding, flag, progress, progress_percent=1):
     else:
         size = getsize(file)
         pieces = []
-        p = 0L
+        p = 0
         h = open(file, 'rb')
         while p < size:
             x = h.read(min(piece_length, size - p))

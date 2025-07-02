@@ -215,7 +215,7 @@ class SatoshiDaemonManager(object):
 
       #####
       def warnUserHashFail():
-         from PyQt4.QtGui import QMessageBox
+         from PyQt5.QtWidgets import QMessageBox
          QMessageBox.warning(self, tr('Hash Failure'), tr("""The torrent download 
             is currently encountering too many packet hash failures to allow it to 
             progress properly. As a result, the torrent engine has been halted. You 
@@ -615,7 +615,7 @@ class SatoshiDaemonManager(object):
       #New backend code: we wont be polling the SDM state in the main thread
       #anymore, instead create a thread at bitcoind start to poll the SDM state
       #and notify the main thread once bitcoind is ready, then terminates
-      self.pollBitcoindState(callback, async=True)
+      self.pollBitcoindState(callback, async_=True)
 
       
    #############################################################################
@@ -826,7 +826,7 @@ class SatoshiDaemonManager(object):
          # If we get here, bitcoind is gave us a response.
          secSinceLastBlk = RightNow() - latestInfo['toptime']
          blkspersec = latestInfo['blkspersec']
-         #print 'Blocks per 10 sec:', ('UNKNOWN' if blkspersec==-1 else blkspersec*10)
+         #print('Blocks per 10 sec:', ('UNKNOWN' if blkspersec==-1 else blkspersec*10)
          if secSinceLastBlk > 4*HOUR or blkspersec==-1:
             return 'BitcoindSynchronizing'
          else:
@@ -964,10 +964,10 @@ class SatoshiDaemonManager(object):
 
    #############################################################################
    def printSDMInfo(self):
-      print '\nCurrent SDM State:'
-      print '\t', 'SDM State Str'.ljust(20), ':', self.getSDMState()
+      print('\nCurrent SDM State:'
+      print('\t', 'SDM State Str'.ljust(20), ':', self.getSDMState()
       for key,value in self.returnSDMInfo().iteritems():
-         print '\t', str(key).ljust(20), ':', str(value)
+         print('\t', str(key).ljust(20), ':', str(value)
 
    
 

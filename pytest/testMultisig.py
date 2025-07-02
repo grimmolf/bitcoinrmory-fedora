@@ -229,11 +229,11 @@ class MSUtilsTest(unittest.TestCase):
       serUstxASCII = ustx.serializeAscii()
       ustx2 = UnsignedTransaction().unserializeAscii(serUstxASCII)
       self.assertEqual(serUstx, ustx2.serialize())
-      #print '' 
-      #print 'Sample TxSigCollect Block:'
+      #print('' 
+      #print('Sample TxSigCollect Block:'
       #print serUstxASCII
       #ustx.pprint()
-      #print '\n'
+      #print('\n'
       #ustx.evaluateSigningStatus().pprint()
 
    def testAddSigToUSTX(self):
@@ -330,14 +330,14 @@ class MSUtilsTest(unittest.TestCase):
       pubStrs  = [pubk.toBinStr() for pubk in pubKeys]
 
       #for i,prv in enumerate(privKeys):
-         #print 'PrivKey %d:', prv.toHexStr()
+         #print('PrivKey %d:', prv.toHexStr()
 
       msScript = pubkeylist_to_multisig_script(pubStrs, 2)
       msScriptReverse = pubkeylist_to_multisig_script(pubStrs[::-1], 2)
       self.assertEqual(msScript, msScriptReverse)
       
       #for opStr in convertScriptToOpStrings(msScript):
-         #print '   ', opStr
+         #print('   ', opStr
 
       dtxo = DecoratedTxOut(msScript, 1.0*ONE_BTC)
 
@@ -478,14 +478,14 @@ class LockboxRelatedObjectsTest(unittest.TestCase):
          kIqzoFd40y6UdAyjXPA90dZsXLZHft5ZhzGzrZEBSTBGAiEA5hmqIWXzmymsvmcCs5eT6T8r1Ot0Az1m
          XDRiI4wNE/ICIQCqCvWQirOgV3jTLpR0DKNc8D3R1mxctkd+3lmHMbOtkQFN0QFXQQTvJ9REU6uNF9tq
          kmOWOaSme3wv+2pdNjQvonQMceMVLx8UVLu/R8TMYLxIX/SO7Hsd6QM9dxozXVK80Hajp29LQQTvJ9RE
-         U6uNF9tqkmOWOaSme3wv+2pdNjQvonQMceMVLx8UVLu/R8TMYLxIX/SO7Hsd6QM9dxozXVK80Hajp29L
+         U6uNF9tqkmOWOaSme3wv+2pdNjQvonQMceMVLx8UVLu/R8TMYLxIX/SO7Hsd6QM9dxozXVK80Hajp29
          QQTvJ9REU6uNF9tqkmOWOaSme3wv+2pdNjQvonQMceMVLx8UVLu/R8TMYLxIX/SO7Hsd6QM9dxozXVK8
          0Hajp29LQQTvJ9REU6uNF9tqkmOWOaSme3wv+2pdNjQvonQMceMVLx8UVLu/R8TMYLxIX/SO7Hsd6QM9
          dxozXVK80Hajp29LQQTvJ9REU6uNF9tqkmOWOaSme3wv+2pdNjQvonQMceMVLx8UVLu/R8TMYLxIX/SO
          7Hsd6QM9dxozXVK80Hajp29LQQTvJ9REU6uNF9tqkmOWOaSme3wv+2pdNjQvonQMceMVLx8UVLu/R8TM
          YLxIX/SO7Hsd6QM9dxozXVK80Hajp29LQQTvJ9REU6uNF9tqkmOWOaSme3wv+2pdNjQvonQMceMVLx8U
          VLu/R8TMYLxIX/SO7Hsd6QM9dxozXVK80Hajp29LV67/////AbCfLQAAAAAAGXapFCwDJu3M0e/OzPv8
-         yTMMgkKohccUiKwAAAAAAAhDZXJyVllqRAD/////AUEE7yfURFOrjRfbapJjljmkpnt8L/tqXTY0L6J0
+         yTMMgkKohccUiKwAAAAAAAhDZXJyVllqRAD/////AUEE7yfURFOrjRfbapJjljmkpnt8/tqXTY0L6J0
          DHHjFS8fFFS7v0fEzGC8SF/0jux7HekDPXcaM11SvNB2o6dvSwAA/VoCAQAAAAsRCQcRyZHa7iCRLwdD
          H0oHdiOvbDVj5cDoexX5HK0fFh8RvAIAAAD91wEBAAAAAqSzhO8p2UlTYZbBtnV3nyrqrfShMZfzDpId
          Lcm6AQPzAQAAAItIMEUCIQCREoEDVTRz2WqLHbLnDYKpTUhgufQ7je76GxYCyppdGAIgHEhwzPsLCdra
@@ -603,7 +603,7 @@ class LockboxRelatedObjectsTest(unittest.TestCase):
          nc8m+JpnnQgVh+/LtO8OaNW4ev8+AQBBBM4V2NEr/b6GvTRXiJEWXMNcxLQuXd9P6on1hIfnX0hROwi+
          FB6c4NExF5ddt8mZwLFQ+Dc3ZNC8tfuIjYZGjaNIMEUCIQC5OkpGv/UnK/ih2GiUf9zHhBeJjYJG7YVM
          ZvaRfXiZTgIgPsSob1XTyyX6i4HrKut4N+BjCQIoFT2xjFxwzXPcxGgBAAI0AQAAAAsRCQcZdqkUJ3xW
-         xFlUFSoyhCkgAA+CUb1XICKIrHBvmAAAAAAAAAAETk9ORQAAADIBAAAACxEJBxepFJQW3sWnzet6O68L
+         xFlUFSoyhCkgAA+CUb1XICKIrHBvmAAAAAAAAAAETk9ORQAAADIBAAAACxEJBxepFJQW3sWnzet6O68
          oU94dTLMfpFCh4CWmAAAAAAAAAAETk9ORQAAAA==
          ================================================================================ 
          """.strip())
@@ -913,7 +913,7 @@ class PubKeyBlockTest(unittest.TestCase):
       txoutA.value = 50 * ONE_BTC
       txoutA.binScript = '\x76\xa9\x14' + addrA.getAddr160() + '\x88\xac'
       # Test pprint
-      #print '\nTest pretty print PyTxIn, expect PrevTXHash all 0s'
+      #print('\nTest pretty print PyTxIn, expect PrevTXHash all 0s'
       #testTxIn.pprint()
    
       # test binary unpacker in unserialize
@@ -921,7 +921,7 @@ class PubKeyBlockTest(unittest.TestCase):
       self.assertEqual(txoutA.getScript(), testTxOut.getScript())
       self.assertEqual(txoutA.value, testTxOut.getValue())
       # Test pprint
-      #print '\nTest pretty print PyTxOut'
+      #print('\nTest pretty print PyTxOut'
       #testTxOut.pprint()
       
       tx1 = PyTx()

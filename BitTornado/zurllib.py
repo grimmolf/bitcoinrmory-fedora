@@ -39,11 +39,11 @@ class urlopen:
     def _open(self, url):
         self.tries += 1
         if self.tries > MAX_REDIRECTS:
-            raise IOError, ('http error', 500,
+            raise IOError(('http error', 500,)
                             "Internal Server Error: Redirect Recursion")
         (scheme, netloc, path, pars, query, fragment) = urlparse(url)
         if scheme != 'http' and scheme != 'https':
-            raise IOError, ('url error', 'unknown url type', scheme, url)
+            raise IOError(('url error', 'unknown url type', scheme, url))
         url = path
         if pars:
             url += ';'+pars
@@ -59,8 +59,8 @@ class urlopen:
                                 { 'User-Agent': VERSION,
                                   'Accept-Encoding': 'gzip' } )
             self.response = self.connection.getresponse()
-        except HTTPException, e:
-            raise IOError, ('http error', str(e))
+        except HTTPException as e:
+            raise IOError(('http error', str(e)))
         status = self.response.status
         if status in (301,302):
             try:
@@ -78,7 +78,7 @@ class urlopen:
                     return
             except:
                 pass
-            raise IOError, ('http error', status, self.response.reason)
+            raise IOError(('http error', status, self.response.reason))
 
     def read(self):
         if self.error_return:
@@ -93,7 +93,7 @@ class urlopen:
                 f = GzipFile(fileobj = compressed)
                 data = f.read()
             except:
-                raise IOError, ('http error', 'got corrupt response')
+                raise IOError(('http error', 'got corrupt response'))
         return data
 
     def close(self):

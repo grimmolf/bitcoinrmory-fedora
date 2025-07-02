@@ -55,14 +55,14 @@ class SingleSocket:
         
     def close(self):
         '''
-        for x in xrange(5,0,-1):
+        for x in range(5,0,-1):
             try:
                 f = inspect.currentframe(x).f_code
                 print (f.co_filename,f.co_firstlineno,f.co_name)
                 del f
             except:
                 pass
-        print ''
+        print(''
         '''
         assert self.socket
         self.connected = False
@@ -101,7 +101,7 @@ class SingleSocket:
                         self.buffer[0] = buf[amount:]
                         break
                     del self.buffer[0]
-            except socket.error, e:
+            except socket.error as e:
                 try:
                     dead = e[0] != EWOULDBLOCK
                 except:
@@ -180,7 +180,7 @@ class SocketHandler:
                     self.interfaces.append(server.getsockname()[0])
                 server.listen(64)
                 self.poll.register(server, POLLIN)
-            except socket.error, e:
+            except socket.error as e:
                 for server in self.servers.values():
                     try:
                         server.close()
@@ -223,7 +223,7 @@ class SocketHandler:
                 self.bind(listen_port, bind,
                                ipv6_socket_style = ipv6_socket_style, upnp = upnp)
                 return listen_port
-            except socket.error, e:
+            except socket.error as e:
                 pass
         raise socket.error(str(e))
 
@@ -241,7 +241,7 @@ class SocketHandler:
             sock.connect_ex(dns)
         except socket.error:
             raise
-        except Exception, e:
+        except Exception as e:
             raise socket.error(str(e))
         self.poll.register(sock, POLLIN)
         s = SingleSocket(self, sock, handler, dns[0])
@@ -262,9 +262,9 @@ class SocketHandler:
             try:
                 addrinfos = socket.getaddrinfo(dns[0], int(dns[1]),
                                                socktype, socket.SOCK_STREAM)
-            except socket.error, e:
+            except socket.error as e:
                 raise
-            except Exception, e:
+            except Exception as e:
                 raise socket.error(str(e))
             if randomize:
                 shuffle(addrinfos)
@@ -317,7 +317,7 @@ class SocketHandler:
                             self._close_socket(s)
                         else:
                             s.handler.data_came_in(s, data)
-                    except socket.error, e:
+                    except socket.error as e:
                         code, msg = e
                         if code != EWOULDBLOCK:
                             self._close_socket(s)

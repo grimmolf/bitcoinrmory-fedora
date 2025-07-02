@@ -45,15 +45,15 @@ if (DoSetup and len(argv)>2) or (not DoSetup and len(argv)>1):
 
 
 def popen(cmdList, cwd=None):
-   print '*'*80
-   print 'Executing: "%s"' % ' '.join(cmdList)
+   print('*'*80
+   print('Executing: "%s"' % ' '.join(cmdList)
    if cwd:
-      print '         : CWD="%s"'  % cwd
+      print('         : CWD="%s"'  % cwd
    proc = subprocess.Popen(cmdList, cwd=cwd)
    while proc.poll() is None:
       time.sleep(1)
-   print 'Done with: "%s"' % ' '.join(cmdList)
-   print '*'*80
+   print('Done with: "%s"' % ' '.join(cmdList)
+   print('*'*80
 
 
 if DoSetup:
@@ -88,7 +88,7 @@ for line in open('armoryengine/ArmoryUtils.py','r').readlines():
          verStr += '.%d' % vquad[3]
       break
 
-print 'Armory version:', verStr 
+print('Armory version:', verStr 
 instDir = 'armory_%s_raspbian-armhf' % verStr
 targz   = '../' + instDir + '.tar.gz'
 if os.path.exists(instDir):
@@ -103,12 +103,12 @@ inc1 = os.path.abspath(os.path.join(PYROOT_PATH, 'usr/include'))
 inc2 = os.path.abspath(os.path.join(PYROOT_PATH, 'usr/include/python2.7'))
 lib  = os.path.abspath(os.path.join(PYROOT_PATH, 'usr/lib/python2.7/config-arm-linux-gnueabihf'))
 
-print 'Cross-compiler Root:', CROSSCOMPILEPATH
-print '   CXX:', cxx
-print '   CC: ', cc
-print '   INC:', inc1
-print '   INC:', inc2
-print '   LIB:', lib
+print('Cross-compiler Root:', CROSSCOMPILEPATH
+print('   CXX:', cxx
+print('   CC: ', cc
+print('   INC:', inc1
+print('   INC:', inc2
+print('   LIB:', lib
 
 popen(['make', 'clean'])
 popen(['python', 'update_version.py'])

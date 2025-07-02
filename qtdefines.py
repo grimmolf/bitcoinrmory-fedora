@@ -8,8 +8,9 @@
 import struct
 from tempfile import mkstemp
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
 import urllib
 
 from armorycolors import Colors, htmlColor
@@ -694,8 +695,8 @@ def restoreTableView(qtbl, hexBytes):
          
       for i,c in toRestore[:-1]:
          qtbl.setColumnWidth(i, c)
-   except Exception, e:
-      print 'ERROR!'
+   except Exception as e:
+      print('ERROR!')
       pass
       # Don't want to crash the program just because couldn't load tbl data
 

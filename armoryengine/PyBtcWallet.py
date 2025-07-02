@@ -350,7 +350,7 @@ class PyBtcWallet(object):
          txlist = abe.getTxList()
          print len(txlist)
          for rtx in txlist:
-            print '\t', binary_to_hex(rtx.getTxHash(), BIGENDIAN)
+            print('\t', binary_to_hex(rtx.getTxHash(), BIGENDIAN)
          
    #############################################################################
    def hasAnyImported(self):
@@ -582,7 +582,7 @@ class PyBtcWallet(object):
                                                                else backupPath
       try:
          shutil.copy(self.walletPath, walletFileBackup)
-      except IOError, errReason:
+      except IOError as errReason:
          LOGERROR('Unable to copy file %s' % backupPath)
          LOGERROR('Reason for copy failure: %s' % errReason)
          retVal = False
@@ -2074,7 +2074,7 @@ class PyBtcWallet(object):
       if verifyIntegrity:
          try:
             nError = self.doWalletFileConsistencyCheck()
-         except KeyDataError, errmsg:
+         except KeyDataError as errmsg:
             LOGEXCEPT('***ERROR:  Wallet file had unfixable errors.')
             raise KeyDataError(errmsg)
 
@@ -2981,16 +2981,16 @@ class PyBtcWallet(object):
       print indent + '   isLocked  :', self.isLocked
       print indent + '   ShortLabel:', self.labelName 
       print indent + '   LongLabel :', self.labelDescr
-      print ''
+      print(''
       print indent + 'Root key:', self.addrMap['ROOT'].getAddrStr(),
-      print '(this address is never used)'
+      print('(this address is never used)'
       if allAddrInfo:
          self.addrMap['ROOT'].pprint(indent=indent)
       print indent + 'All usable keys:'
       sortedAddrList = self.getAddrListSortedByChainIndex()
       for i,addr160,addrObj in sortedAddrList:
          if not addr160=='ROOT':
-            print '\n' + indent + 'Address:', addrObj.getAddrStr()
+            print('\n' + indent + 'Address:', addrObj.getAddrStr()
             if allAddrInfo:
                addrObj.pprint(indent=indent)
 
@@ -3007,12 +3007,12 @@ class PyBtcWallet(object):
          rootstr2 = binary_to_hex(wlt2.addrMap['ROOT'].serialize())
          isEqualTo = isEqualTo and (rootstr1 == rootstr2)
          if debug:
-            print ''
-            print 'RootAddrSelf:'
+            print(''
+            print('RootAddrSelf:'
             print prettyHex(rootstr1, indent=' '*5)
-            print 'RootAddrWlt2:'
+            print('RootAddrWlt2:'
             print prettyHex(rootstr2, indent=' '*5)
-            print 'RootAddrDiff:',
+            print('RootAddrDiff:',
             pprintDiff(rootstr1, rootstr2, indent=' '*5)
 
          for addr160 in self.addrMap.keys():
@@ -3020,12 +3020,12 @@ class PyBtcWallet(object):
             addrstr2 = binary_to_hex(wlt2.addrMap[addr160].serialize())
             isEqualTo = isEqualTo and (addrstr1 == addrstr2)
             if debug:
-               print ''
-               print 'AddrSelf:', binary_to_hex(addr160),
+               print(''
+               print('AddrSelf:', binary_to_hex(addr160),
                print prettyHex(binary_to_hex(self.addrMap['ROOT'].serialize()), indent='     ')
-               print 'AddrSelf:', binary_to_hex(addr160),
+               print('AddrSelf:', binary_to_hex(addr160),
                print prettyHex(binary_to_hex(wlt2.addrMap['ROOT'].serialize()), indent='     ')
-               print 'AddrDiff:',
+               print('AddrDiff:',
                pprintDiff(addrstr1, addrstr2, indent=' '*5)
       except:
          return False

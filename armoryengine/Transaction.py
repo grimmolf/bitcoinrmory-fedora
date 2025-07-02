@@ -679,10 +679,10 @@ class PyTx(BlockComponent):
       self.outputs    = []
       self.version    = txData.get(UINT32)
       numInputs  = txData.get(VAR_INT)
-      for i in xrange(numInputs):
+      for i in range(numInputs):
          self.inputs.append( PyTxIn().unserialize(txData) )
       numOutputs = txData.get(VAR_INT)
-      for i in xrange(numOutputs):
+      for i in range(numOutputs):
          self.outputs.append( PyTxOut().unserialize(txData) )
       self.lockTime   = txData.get(UINT32)
       endPos = txData.getPosition()
@@ -766,16 +766,16 @@ class PyTx(BlockComponent):
       theSer = self.serialize()
       print binary_to_hex(bu.get(BINARY_CHUNK, 4))
       nTxin = bu.get(VAR_INT)
-      print 'VAR_INT(%d)' % nTxin
+      print('VAR_INT(%d)' % nTxin
       for i in range(nTxin):
          print binary_to_hex(bu.get(BINARY_CHUNK,32))
          print binary_to_hex(bu.get(BINARY_CHUNK,4))
          scriptSz = bu.get(VAR_INT)
-         print 'VAR_IN(%d)' % scriptSz
+         print('VAR_IN(%d)' % scriptSz
          print binary_to_hex(bu.get(BINARY_CHUNK,scriptSz))
          print binary_to_hex(bu.get(BINARY_CHUNK,4))
       nTxout = bu.get(VAR_INT)
-      print 'VAR_INT(%d)' % nTxout
+      print('VAR_INT(%d)' % nTxout
       for i in range(nTxout):
          print binary_to_hex(bu.get(BINARY_CHUNK,8))
          scriptSz = bu.get(VAR_INT)
@@ -827,10 +827,10 @@ class InputSigningStatus(object):
 
       ind = ' '*indent
       print ind,
-      print '(%d-of-%d)' % (self.M, self.N),
-      print 'AllSigned: %s' % str(self.allSigned).ljust(6),
-      print 'AllSlots:',  ' '.join([lutFunc(s) for s in self.statusN]), ' ',
-      print 'ReqSorted:', ' '.join([lutFunc(s) for s in self.statusM]), ' '
+      print('(%d-of-%d)' % (self.M, self.N),
+      print('AllSigned: %s' % str(self.allSigned).ljust(6),
+      print('AllSlots:',  ' '.join([lutFunc(s) for s in self.statusN]), ' ',
+      print('ReqSorted:', ' '.join([lutFunc(s) for s in self.statusM]), ' '
 
 
 ################################################################################
@@ -848,7 +848,7 @@ class TxSigningStatus(object):
 
 
    def pprint(self, indent=3, lutFunc=None):
-      print ' '*indent + 'Tx has %d inputs:' % self.numInputs
+      print(' '*indent + 'Tx has %d inputs:' % self.numInputs
       for stat in self.statusList:
          stat.pprint(indent+3, lutFunc)
 
@@ -1026,7 +1026,7 @@ class UnsignedTxInput(AsciiSerializable):
          scriptHash = hash160(self.p2shScript)
          if not SCRADDR_P2SH_BYTE+scriptHash == self.p2shScrAddr:
             self.isInitialized = False
-            raise InvalidScriptError, 'No P2SH script info avail for TxDP'
+            raise InvalidScriptError('No P2SH script info avail for TxDP')
 
          # Replace script type with that of the sub-script
          # We can use the presence of p2shScript to identify it's p2sh
@@ -1553,7 +1553,7 @@ class UnsignedTxInput(AsciiSerializable):
       txoIdx    = self.outpoint.txOutIndex
       scrType   = CPP_TXOUT_SCRIPT_NAMES[self.scriptType]
 
-      print 'UnsignedTxInput --  %s:%d (%s)' % (txHashStr, txoIdx, scrType)
+      print('UnsignedTxInput --  %s:%d (%s)' % (txHashStr, txoIdx, scrType)
 
 
 
@@ -2030,7 +2030,7 @@ class UnsignedTransaction(AsciiSerializable):
       if len(txMap)==0 and not TheBDM.getState()==BDM_BLOCKCHAIN_READY:
          # TxDP includes the transactions that supply the inputs to this
          # transaction, so the BDM needs to be available to fetch those.
-         raise BlockchainUnavailableError, ('Must input supporting transactions '
+         raise BlockchainUnavailableError(('Must input supporting transactions ')
                                             'or access to the blockchain, to '
                                             'create the TxDP')
 
@@ -2051,16 +2051,16 @@ class UnsignedTransaction(AsciiSerializable):
          if len(txMap)>0:
             # If supplied a txMap, we expect it to have everything we need
             if not txMap.has_key(txhash):
-               raise InvalidHashError, ('Could not find the referenced tx '
+               raise InvalidHashError(('Could not find the referenced tx ')
                                         'in supplied txMap')
             pyPrevTx = txMap[txhash].copy()
          elif TheBDM.getState()==BDM_BLOCKCHAIN_READY:
             cppPrevTx = TheBDM.bdv().getTxByHash(txhash)
             if not cppPrevTx:
-               raise InvalidHashError, 'Could not find the referenced tx'
+               raise InvalidHashError('Could not find the referenced tx')
             pyPrevTx = PyTx().unserialize(cppPrevTx.serialize())
          else:
-            raise InvalidScriptError, 'No previous-tx data available for TxDP'
+            raise InvalidScriptError('No previous-tx data available for TxDP')
 
          txoScript = pyPrevTx.outputs[txoIdx].binScript
          txoScrAddr = script_to_scrAddr(txoScript)
@@ -2488,7 +2488,7 @@ class UnsignedTransaction(AsciiSerializable):
    def getBroadcastTxIfReady(self, verifySigs=True):
       try:
          return self.getSignedPyTx(verifySigs)
-      except SignatureError, msg:
+      except SignatureError as msg:
          return None
 
 
@@ -2530,7 +2530,7 @@ class UnsignedTransaction(AsciiSerializable):
          dtxo = self.decorTxOuts[i]
          addrDisp = getTxOutScriptDisplayStr(txout.binScript)
          valDisp = coin2str(txout.value, maxZeros=2)
-         print ' '*2*indent + 'Recip:', addrDisp.ljust(35),
+         print(' '*2*indent + 'Recip:', addrDisp.ljust(35),
          print valDisp, 'BTC',
          print ('(%s)' % dtxo.contribID) if dtxo.contribID else ''
 

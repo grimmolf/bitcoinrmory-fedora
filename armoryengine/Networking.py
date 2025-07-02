@@ -92,7 +92,7 @@ class ArmoryClient(Protocol):
       """
 
       
-      #print '\n\nData Received:',
+      #print('\n\nData Received:',
       #pprintHex(binary_to_hex(data), withAddr=False)
 
       # Put the current buffer into an unpacker, process until empty
@@ -259,7 +259,7 @@ class ArmoryClient(Protocol):
       """
          
       if isinstance(msg, PyMessage):
-         #print '\n\nSending Message:', msg.payload.command.upper()
+         #print('\n\nSending Message:', msg.payload.command.upper()
          #pprintHex(binary_to_hex(msg.serialize()), indent='   ')
          if CLI_OPTIONS.netlog:
             LOGDEBUG( 'SendMessage: %s', msg.payload.command)
@@ -267,7 +267,7 @@ class ArmoryClient(Protocol):
          self.transport.write(msg.serialize())
       else:
          msg = PyMessage(payload=msg)
-         #print '\n\nSending Message:', msg.payload.command.upper()
+         #print('\n\nSending Message:', msg.payload.command.upper()
          #pprintHex(binary_to_hex(msg.serialize()), indent='   ')
          if CLI_OPTIONS.netlog:
             LOGDEBUG( 'SendMessage: %s', msg.payload.command)
@@ -372,7 +372,7 @@ class ArmoryClientFactory(ReconnectingClientFactory):
       if self.proto:
          self.proto.sendTx(pytxObj)
       else:
-         raise ConnectionError, 'Connection to localhost DNE.'
+         raise ConnectionError('Connection to localhost DNE.')
 
 
    #############################################################################
@@ -380,7 +380,7 @@ class ArmoryClientFactory(ReconnectingClientFactory):
       if self.proto:
          self.proto.sendMessage(msgObj)
       else:
-         raise ConnectionError, 'Connection to localhost DNE.'
+         raise ConnectionError('Connection to localhost DNE.')
 
 
 
@@ -475,13 +475,13 @@ class PyMessage(object):
          raise UnknownNetworkPayload
 
       if self.magic != MAGIC_BYTES:
-         raise NetworkIDError, 'Message has wrong network bytes!'
+         raise NetworkIDError('Message has wrong network bytes!')
       return self
 
 
    def pprint(self, nIndent=0):
       indstr = indent*nIndent
-      print ''
+      print(''
       print indstr + 'Bitcoin-Network-Message -- ' + self.cmd.upper()
       print indstr + indent + 'Magic:   ' + binary_to_hex(self.magic)
       print indstr + indent + 'Command: ' + self.cmd
@@ -534,7 +534,7 @@ class PyNetAddress(object):
 
    def pprint(self, nIndent=0):
       indstr = indent*nIndent
-      print ''
+      print(''
       print indstr + 'Network-Address:',
       print indstr + indent + 'Time:  ' + unixTimeToFormatStr(self.time)
       print indstr + indent + 'Svcs:  ' + self.services
@@ -574,14 +574,14 @@ class PayloadAddr(object):
 
    def pprint(self, nIndent=0):
       indstr = indent*nIndent
-      print ''
+      print(''
       print indstr + 'Message(addr):',
       for a in self.addrList:
          a.pprintShort()
 
    def pprintShort(self):
       for a in self.addrList:
-         print '[' + quad_to_str(a.pprintShort()) + '], '
+         print('[' + quad_to_str(a.pprintShort()) + '], '
 
 ################################################################################
 ################################################################################
@@ -604,7 +604,7 @@ class PayloadPing(object):
 
    def pprint(self, nIndent=0):
       indstr = indent*nIndent
-      print ''
+      print(''
       print indstr + 'Message(ping)'
 
       
@@ -655,7 +655,7 @@ class PayloadVersion(object):
 
    def pprint(self, nIndent=0):
       indstr = indent*nIndent
-      print ''
+      print(''
       print indstr + 'Message(version):'
       print indstr + indent + 'Version:  ' + str(self.version)
       print indstr + indent + 'Services: ' + self.services
@@ -686,7 +686,7 @@ class PayloadVerack(object):
 
    def pprint(self, nIndent=0):
       indstr = indent*nIndent
-      print ''
+      print(''
       print indstr + 'Message(verack)'
 
 
@@ -728,7 +728,7 @@ class PayloadInv(object):
 
    def pprint(self, nIndent=0):
       indstr = indent*nIndent
-      print ''
+      print(''
       print indstr + 'Message(inv):'
       for inv in self.invList:
          print indstr + indent + ('BLOCK: ' if inv[0]==2 else 'TX   : ') + \
@@ -777,7 +777,7 @@ class PayloadGetData(object):
 
    def pprint(self, nIndent=0):
       indstr = indent*nIndent
-      print ''
+      print(''
       print indstr + 'Message(getdata):'
       for inv in self.invList:
          print indstr + indent + ('BLOCK: ' if inv[0]==2 else 'TX   : ') + \
@@ -820,7 +820,7 @@ class PayloadGetHeaders(object):
    
    def pprint(self, nIndent=0):
       indstr = indent*nIndent
-      print ''
+      print(''
       print indstr + 'Message(getheaders):'
       print indstr + indent + 'HashList(s) :' + binary_to_hex(self.hashList[0])
       for i in range(1,len(self.hashList)):
@@ -865,7 +865,7 @@ class PayloadGetBlocks(object):
 
    def pprint(self, nIndent=0):
       indstr = indent*nIndent
-      print ''
+      print(''
       print indstr + 'Message(getheaders):'
       print indstr + indent + 'Version      :' + str(self.version)
       print indstr + indent + 'HashList(s) :' + binary_to_hex(self.hashList[0])
@@ -891,7 +891,7 @@ class PayloadTx(object):
 
    def pprint(self, nIndent=0):
       indstr = indent*nIndent
-      print ''
+      print(''
       print indstr + 'Message(tx):'
       self.tx.pprint(nIndent+1)
 
@@ -931,7 +931,7 @@ class PayloadHeaders(object):
 
    def pprint(self, nIndent=0):
       indstr = indent*nIndent
-      print ''
+      print(''
       print indstr + 'Message(headers):'
       self.header.pprint(nIndent+1)
       for header in self.headerList:
@@ -971,7 +971,7 @@ class PayloadBlock(object):
 
    def pprint(self, nIndent=0):
       indstr = indent*nIndent
-      print ''
+      print(''
       print indstr + 'Message(block):'
       self.header.pprint(nIndent+1)
       for tx in self.txList:

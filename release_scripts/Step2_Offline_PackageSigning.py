@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /usr/bin/python3
 ################################################################################
 #                                                                              #
 # Copyright (C) 2011-2015, Armory Technologies, Inc.                           #
@@ -240,14 +240,14 @@ announcePath = os.path.join(dstAnnounce, announceName)
 # Checking that wallet has signing key, and user can unlock wallet
 wlt = PyBtcWallet().readWalletFile(wltPath)
 if not wlt.hasAddr(signAddress):
-   print 'Supplied wallet does not have the correct signing key'
+   print('Supplied wallet does not have the correct signing key'
    exit(1)
 
-print 'Must unlock wallet to sign the announce file...'
+print('Must unlock wallet to sign the announce file...'
 while True:
    passwd = SecureBinaryData(getpass.getpass('Wallet passphrase: '))
    if not wlt.verifyPassphrase(passwd):
-      print 'Invalid passphrase!'
+      print('Invalid passphrase!'
       continue
    break
 
@@ -303,19 +303,19 @@ fnew.close()
 fileMappings = {}
 longestID  = 0
 longestURL = 0
-print 'Reading file mapping...'
+print('Reading file mapping...'
 with open('announcemap.txt','r') as f:
    for line in f.readlines():
       fname, fid = line.strip().split()
       inputPath = os.path.join(srcAnnounce, fname)
       if not os.path.exists(inputPath):
-         print 'ERROR:  Could not find %s-file (%s)' % (fid, inputPath)
+         print('ERROR:  Could not find %s-file (%s)' % (fid, inputPath)
          exit(1)
-      print '   Map: %s --> %s' % (fname, fid)
+      print('   Map: %s --> %s' % (fname, fid)
       
 
 
-print 'Signing and copying files to %s directory...' % dstAnnounce
+print('Signing and copying files to %s directory...' % dstAnnounce
 with open('announcemap.txt','r') as f:
    for line in f.readlines():
       fname, fid = line.strip().split()
@@ -340,7 +340,7 @@ with open('announcemap.txt','r') as f:
       
 
 
-print 'Creating digest file...'
+print('Creating digest file...'
 digestFile = open(announcePath, 'w')
 
 ###
@@ -352,38 +352,38 @@ for fname,vals in fileMappings.iteritems():
 digestFile.close()
 
 
-print ''
-print '------'
+print(''
+print('------'
 with open(announcePath, 'r') as f:
    dfile = f.read()
    print dfile
-print '------'
+print('------'
 
-print 'Please verify the above data to your satisfaction:'
+print('Please verify the above data to your satisfaction:'
 raw_input('Hit <enter> when ready: ')
    
 
 doSignFile(announcePath, os.path.join(dstAnnounce, announceName))
 
 
-print '*'*80
+print('*'*80
 print open(announcePath, 'r').read()
-print '*'*80
+print('*'*80
 
 
-print ''
-print 'Verifying files'
+print(''
+print('Verifying files'
 for fname,vals in fileMappings.iteritems():
    if 'bootstrap' in fname:
       continue
    with open(os.path.join(dstAnnounce, fname), 'rb') as f:
       sig,msg = readSigBlock(f.read())
       addrB58 = verifySignature(sig, msg, 'v1', ord(ADDRBYTE))
-      print 'Sign addr for:', vals[0].ljust(longestID+3), addrB58
+      print('Sign addr for:', vals[0].ljust(longestID+3), addrB58
    
 
 
-print 'Done!'
+print('Done!'
 
 
 

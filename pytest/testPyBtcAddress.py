@@ -385,7 +385,7 @@ class PyBtcAddressTest(TiabTest):
       satoshiAddrStr = hash160_to_addrStr(addrPiece1Bin)
 
       saddr = PyBtcAddress().createFromPublicKey( hex_to_binary(satoshiPubKeyHex) )
-      print '\tAddr calc from pubkey: ', saddr.calculateAddrStr()
+      print('\tAddr calc from pubkey: ', saddr.calculateAddrStr()
       self.assertTrue(checkAddrStrValid(satoshiAddrStr))
    
       testAddr = PyBtcAddress().createFromPlainKeyData(PRIVATE_KEY, ADDRESS_20, publicKey65=PUBLIC_KEY)

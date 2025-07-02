@@ -10,8 +10,9 @@ import platform
 import sys
 from armoryengine.ALL import *
 from qtdefines import *
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
 
 
 LOCKBOXCOLS = enum('ID', 'MSType', 'CreateDate', 'LBName', \
