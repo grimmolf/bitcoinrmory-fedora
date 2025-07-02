@@ -2098,7 +2098,8 @@ class UnsignedTransaction(AsciiSerializable):
    #############################################################################
    def createFromTxOutSelection(self, utxoSelection, scriptValuePairs,
                                 pubKeyMap=None, txMap=None, p2shMap=None):
-
+      
+      from armoryengine.CoinSelection import sumTxOutList
       totalUtxoSum = sumTxOutList(utxoSelection)
       totalOutputSum = sum([a[1] for a in scriptValuePairs])
       if not totalUtxoSum >= totalOutputSum:
@@ -2882,5 +2883,4 @@ def pprintLedgerEntry(le, indent=''):
 # Putting this at the end because of the circular dependency
 from armoryengine.BDM import TheBDM, BDM_BLOCKCHAIN_READY
 from armoryengine.PyBtcAddress import PyBtcAddress
-from armoryengine.CoinSelection import pprintUnspentTxOutList, sumTxOutList
 from armoryengine.Script import *

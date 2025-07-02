@@ -74,10 +74,10 @@ def convertScriptToOpStrings(binScript):
 
 def pprintScript(binScript, nIndent=0):
    indstr = indent*nIndent
-   print indstr + 'Script:'
+   print(indstr + 'Script:')
    opList = convertScriptToOpStrings(binScript)
    for op in opList:
-      print indstr + indent + op
+      print(indstr + indent + op)
 
 def scriptPushData(binObj):
    sz = len(binObj) 

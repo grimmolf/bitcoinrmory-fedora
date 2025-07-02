@@ -69,7 +69,7 @@ class VerifyOfflinePackageDialog(ArmoryDialog):
       signatureData = allfile[len(magicstart):end]
       fileData = allfile[end+len(magicend):]
       
-      print "All:",end, end+len(magicend), len(fileData), len(allfile)
+      print("All:",end, end+len(magicend), len(fileData), len(allfile))
       
       allsigs = downloadLinkParser(filetext=signatureData).downloadMap
       

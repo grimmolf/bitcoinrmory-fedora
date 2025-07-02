@@ -6,7 +6,8 @@
 #                                                                              #
 ################################################################################
 import sys
-from PyQt5.QtGui  import QColor, QPalette, QApplication
+from PyQt5.QtGui  import QColor, QPalette
+from PyQt5.QtWidgets import QApplication
 
 
 """
@@ -160,20 +161,20 @@ def htmlColor(name):
 
 if __name__== "__main__":
 
-   print Colors.TextWarn
-   print htmlColor("TextRed")
-   print htmlColor("TextWarn")
+   print(Colors.TextWarn)
+   print(htmlColor("TextRed"))
+   print(htmlColor("TextWarn"))
 
-   print "Colors in the palette!"
-   for name,qc in Colors.__dict__.iteritems():
+   print("Colors in the palette!")
+   for name,qc in Colors.__dict__.items():
       if not isinstance(qc, QColor):
          continue
-      print('\t',
-      print ('"'+name+'"').ljust(20), 
-      print str(qc.red()).rjust(3),
-      print str(qc.green()).rjust(3),
-      print str(qc.blue()).rjust(3),
-      print('\t(%s)' % htmlColor(name)
+      print('\t', end='')
+      print(('"'+name+'"').ljust(20), end=' ')
+      print(str(qc.red()).rjust(3), end='')
+      print(str(qc.green()).rjust(3), end='')
+      print(str(qc.blue()).rjust(3), end='')
+      print('\t(%s)' % htmlColor(name))
 
 
 

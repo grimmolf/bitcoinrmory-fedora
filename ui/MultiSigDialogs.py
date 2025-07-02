@@ -23,7 +23,7 @@ from ui.MultiSigModels import \
 import webbrowser
 from armoryengine.CoinSelection import PySelectCoins, PyUnspentTxOut, \
                                     pprintUnspentTxOutList
-import cStringIO
+import io
 import textwrap
 
 #############################################################################
@@ -2370,7 +2370,7 @@ class DlgExportAsciiBlock(ArmoryDialog):
       # Iterate over the text block and get the public key ID.
       # WARNING: For now, the code assumes there will be only one ID returned.
       # If this changes in the future, the code must be adjusted as necessary.
-      blockIO = cStringIO.StringIO(self.asciiBlock)
+      blockIO = io.StringIO(self.asciiBlock)
       pkID = getBlockID(blockIO, self.exportObj.BLKSTRING+'-')[0]
 
       # Prepare to send an email with the public key. For now, the email text

@@ -346,11 +346,11 @@ class PyBtcWallet(object):
    def printAddressBook(self):
       addrbook = self.cppWallet.createAddressBook()
       for abe in addrbook:
-         print hash160_to_addrStr(abe.getAddr160()),
+         print(hash160_to_addrStr(abe.getAddr160()))
          txlist = abe.getTxList()
-         print len(txlist)
+         print(len(txlist))
          for rtx in txlist:
-            print('\t', binary_to_hex(rtx.getTxHash(), BIGENDIAN)
+            print('\t', binary_to_hex(rtx.getTxHash(), BIGENDIAN))
          
    #############################################################################
    def hasAnyImported(self):
@@ -2975,22 +2975,22 @@ class PyBtcWallet(object):
 
    #############################################################################
    def pprint(self, indent='', allAddrInfo=True):
-      print indent + 'PyBtcWallet  :', self.uniqueIDB58
-      print indent + '   useEncrypt:', self.useEncryption
-      print indent + '   watchOnly :', self.watchingOnly
-      print indent + '   isLocked  :', self.isLocked
-      print indent + '   ShortLabel:', self.labelName 
-      print indent + '   LongLabel :', self.labelDescr
-      print(''
-      print indent + 'Root key:', self.addrMap['ROOT'].getAddrStr(),
-      print('(this address is never used)'
+      print(indent + 'PyBtcWallet  :', self.uniqueIDB58)
+      print(indent + '   useEncrypt:', self.useEncryption)
+      print(indent + '   watchOnly :', self.watchingOnly)
+      print(indent + '   isLocked  :', self.isLocked)
+      print(indent + '   ShortLabel:', self.labelName)
+      print(indent + '   LongLabel :', self.labelDescr)
+      print('')
+      print(indent + 'Root key:', self.addrMap['ROOT'].getAddrStr())
+      print('(this address is never used)')
       if allAddrInfo:
          self.addrMap['ROOT'].pprint(indent=indent)
-      print indent + 'All usable keys:'
+      print(indent + 'All usable keys:')
       sortedAddrList = self.getAddrListSortedByChainIndex()
       for i,addr160,addrObj in sortedAddrList:
          if not addr160=='ROOT':
-            print('\n' + indent + 'Address:', addrObj.getAddrStr()
+            print('\n' + indent + 'Address:', addrObj.getAddrStr())
             if allAddrInfo:
                addrObj.pprint(indent=indent)
 
@@ -3007,12 +3007,12 @@ class PyBtcWallet(object):
          rootstr2 = binary_to_hex(wlt2.addrMap['ROOT'].serialize())
          isEqualTo = isEqualTo and (rootstr1 == rootstr2)
          if debug:
-            print(''
-            print('RootAddrSelf:'
-            print prettyHex(rootstr1, indent=' '*5)
-            print('RootAddrWlt2:'
-            print prettyHex(rootstr2, indent=' '*5)
-            print('RootAddrDiff:',
+            print('')
+            print('RootAddrSelf:')
+            print(prettyHex(rootstr1, indent=' '*5))
+            print('RootAddrWlt2:')
+            print(prettyHex(rootstr2, indent=' '*5))
+            print('RootAddrDiff:')
             pprintDiff(rootstr1, rootstr2, indent=' '*5)
 
          for addr160 in self.addrMap.keys():
@@ -3020,12 +3020,12 @@ class PyBtcWallet(object):
             addrstr2 = binary_to_hex(wlt2.addrMap[addr160].serialize())
             isEqualTo = isEqualTo and (addrstr1 == addrstr2)
             if debug:
-               print(''
-               print('AddrSelf:', binary_to_hex(addr160),
-               print prettyHex(binary_to_hex(self.addrMap['ROOT'].serialize()), indent='     ')
-               print('AddrSelf:', binary_to_hex(addr160),
-               print prettyHex(binary_to_hex(wlt2.addrMap['ROOT'].serialize()), indent='     ')
-               print('AddrDiff:',
+               print('')
+               print('AddrSelf:', binary_to_hex(addr160))
+               print(prettyHex(binary_to_hex(self.addrMap['ROOT'].serialize()), indent='     '))
+               print('AddrSelf:', binary_to_hex(addr160))
+               print(prettyHex(binary_to_hex(wlt2.addrMap['ROOT'].serialize()), indent='     '))
+               print('AddrDiff:')
                pprintDiff(addrstr1, addrstr2, indent=' '*5)
       except:
          return False

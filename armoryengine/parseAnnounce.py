@@ -5,7 +5,7 @@
 # See LICENSE or http://www.gnu.org/licenses/agpl.html                         #
 #                                                                              #
 ################################################################################
-from ArmoryUtils import *
+from armoryengine.ArmoryUtils import *
 import os
 from jasvet import readSigBlock
 from copy import deepcopy
@@ -254,10 +254,10 @@ class downloadLinkParser(object):
 
       def recursePrint(theObj, indent=0):
          if not isinstance(theObj, dict):
-            print(' '*indent + str(theObj)
+            print(' '*indent + str(theObj))
          else:
-            for key,val in theObj.iteritems():
-               print(' '*indent + key + ':'
+            for key,val in theObj.items():
+               print(' '*indent + key + ':')
                recursePrint(theObj[key], indent+5)
 
       recursePrint(self.downloadMap)

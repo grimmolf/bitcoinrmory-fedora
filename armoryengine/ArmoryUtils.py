@@ -296,7 +296,7 @@ if OS_WINDOWS:
    import ctypes
    buffer = ctypes.create_unicode_buffer(u'\0' * 260)
    rt = ctypes.windll.shell32.SHGetFolderPathW(0, 26, 0, 0, ctypes.byref(buffer))
-   USER_HOME_DIR = unicode(buffer.value)
+   USER_HOME_DIR = str(buffer.value)
                
    BTC_HOME_DIR    = os.path.join(USER_HOME_DIR, 'Bitcoin', SUBDIR)
    ARMORY_HOME_DIR = os.path.join(USER_HOME_DIR, 'Armory', SUBDIR)
@@ -1661,22 +1661,22 @@ def isASCII(theStr):
 
 
 def toBytes(theStr, theEncoding=DEFAULT_ENCODING):
-   if isinstance(theStr, unicode):
+   if isinstance(theStr, str):
       return theStr.encode(theEncoding)
-   elif isinstance(theStr, str):
+   elif isinstance(theStr, bytes):
       return theStr
    else:
       LOGERROR('toBytes() not been defined for input: %s', str(type(theStr)))
 
 
 def toUnicode(theStr, theEncoding=DEFAULT_ENCODING):
-   if isinstance(theStr, unicode):
+   if isinstance(theStr, str):
       return theStr
-   elif isinstance(theStr, str):
-      return unicode(theStr, theEncoding)
+   elif isinstance(theStr, bytes):
+      return theStr.decode(theEncoding)
    else:
       try:
-         return unicode(theStr)
+         return str(theStr)
       except:
          LOGEXCEPT('toUnicode() not defined for %s', str(type(theStr)))
 
